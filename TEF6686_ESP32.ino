@@ -213,6 +213,7 @@ byte stationlistid;
 byte nowToggleSWMIBand = 1;
 byte stepsize;
 byte StereoLevel;
+byte StereoRange; // AAD
 byte subnetclient;
 byte TEF;
 byte tot;
@@ -456,6 +457,7 @@ void setup() {
   HighEdgeSet = EEPROM.readUInt(EE_UINT16_FMHIGHEDGESET);
   ContrastSet = EEPROM.readByte(EE_BYTE_CONTRASTSET);
   StereoLevel = EEPROM.readByte(EE_BYTE_STEREOLEVEL);
+  StereoRange = EEPROM.readByte(EE_BYTE_STEREORANGE); // AAD
   bandFM = EEPROM.readByte(EE_BYTE_BANDFM);
   bandAM = EEPROM.readByte(EE_BYTE_BANDAM);
   HighCutLevel = EEPROM.readByte(EE_BYTE_HIGHCUTLEVEL);
@@ -862,6 +864,7 @@ void setup() {
     radio.setAMAttenuation(amgain);
   }
   radio.setStereoLevel(StereoLevel);
+  radio.setStereoRange(StereoRange); // AAD
   radio.setHighCutLevel(HighCutLevel);
   radio.setHighCutOffset(HighCutOffset);
   radio.clearRDS(fullsearchrds);
@@ -4355,6 +4358,7 @@ void DefaultSettings() {
   EEPROM.writeUInt(EE_UINT16_FMHIGHEDGESET, 1080);
   EEPROM.writeByte(EE_BYTE_CONTRASTSET, 50);
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, 0);
+  EEPROM.writeByte(EE_BYTE_STEREORANGE, 24); // AAD
   EEPROM.writeByte(EE_BYTE_BANDFM, FM_BAND_ALL);
   EEPROM.writeByte(EE_BYTE_BANDAM, AM_BAND_ALL);
   EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, 70);
@@ -4629,6 +4633,7 @@ void endMenu() {
   EEPROM.writeUInt(EE_UINT16_FMHIGHEDGESET, HighEdgeSet);
   EEPROM.writeByte(EE_BYTE_CONTRASTSET, ContrastSet);
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, StereoLevel);
+  EEPROM.writeByte(EE_BYTE_STEREORANGE, StereoRange); // AAD
   EEPROM.writeByte(EE_BYTE_BANDFM, bandFM);
   EEPROM.writeByte(EE_BYTE_BANDAM, bandAM);
   EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, HighCutLevel);
