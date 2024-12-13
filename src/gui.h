@@ -130,6 +130,7 @@ extern byte stationlistid;
 extern int8_t CNold;
 extern byte StereoLevel;
 extern byte StereoLevel;
+extern byte StereoRange; // AAD
 extern byte submenu;
 extern byte subnetclient;
 extern byte TEF;

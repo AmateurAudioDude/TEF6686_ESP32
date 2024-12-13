@@ -308,12 +308,26 @@ void TEF6686::setFMNoiseBlanker(uint16_t start) {
 }
 
 void TEF6686::setStereoLevel(uint8_t start) {
+  stereoStartLevel = start; // AAD
   if (start == 0) {
-    devTEF_Radio_Set_Stereo_Level(0, start * 10, 60);
+    devTEF_Radio_Set_Stereo_Level(0, start * 10, stereoStartRange * 10); // AAD
     devTEF_Radio_Set_Stereo_Noise(0, 240, 200);
     devTEF_Radio_Set_Stereo_Mph(0, 240, 200);
   } else {
-    devTEF_Radio_Set_Stereo_Level(3, start * 10, 60);
+    devTEF_Radio_Set_Stereo_Level(3, start * 10, stereoStartRange * 10); // AAD
+    devTEF_Radio_Set_Stereo_Noise(3, 240, 200);
+    devTEF_Radio_Set_Stereo_Mph(3, 240, 200);
+  }
+}
+
+void TEF6686::setStereoRange(uint8_t start) { // AAD
+  stereoStartRange = start;
+  if (start == 0) {
+    devTEF_Radio_Set_Stereo_Level(0, stereoStartLevel * 10, start * 10);
+    devTEF_Radio_Set_Stereo_Noise(0, 240, 200);
+    devTEF_Radio_Set_Stereo_Mph(0, 240, 200);
+  } else {
+    devTEF_Radio_Set_Stereo_Level(3, stereoStartLevel * 10, start * 10);
     devTEF_Radio_Set_Stereo_Noise(3, 240, 200);
     devTEF_Radio_Set_Stereo_Mph(3, 240, 200);
   }
