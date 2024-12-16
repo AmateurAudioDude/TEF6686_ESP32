@@ -105,6 +105,7 @@ bool RDSSPYUSB;
 bool RDSstatus;
 bool RDSstatusold;
 bool rdsstereoold;
+bool rotaryaccelerate; // AAD
 bool rtcset;
 bool scandxmode;
 bool scanholdflag;
@@ -213,6 +214,7 @@ byte stationlistid;
 byte nowToggleSWMIBand = 1;
 byte stepsize;
 byte StereoLevel;
+byte StereoRange; // AAD
 byte subnetclient;
 byte TEF;
 byte tot;
@@ -274,6 +276,8 @@ int StereoColor;
 int StereoColorSmooth;
 int SquelchShow;
 int rotary;
+int rotarycounter; // AAD
+int rotarycounteraccelerator; // AAD
 int rssi;
 int rssiold = 200;
 int scanner_filter;
@@ -408,6 +412,7 @@ unsigned long rtplusticker;
 unsigned long rtplustickerhold;
 unsigned long rtticker;
 unsigned long rttickerhold;
+unsigned long rotarytimer; // AAD
 unsigned long scantimer;
 unsigned long signalstatustimer;
 unsigned long tottimer;
@@ -456,6 +461,7 @@ void setup() {
   HighEdgeSet = EEPROM.readUInt(EE_UINT16_FMHIGHEDGESET);
   ContrastSet = EEPROM.readByte(EE_BYTE_CONTRASTSET);
   StereoLevel = EEPROM.readByte(EE_BYTE_STEREOLEVEL);
+  StereoRange = EEPROM.readByte(EE_BYTE_STEREORANGE); // AAD
   bandFM = EEPROM.readByte(EE_BYTE_BANDFM);
   bandAM = EEPROM.readByte(EE_BYTE_BANDAM);
   HighCutLevel = EEPROM.readByte(EE_BYTE_HIGHCUTLEVEL);
@@ -554,6 +560,7 @@ void setup() {
   mempionly = EEPROM.readByte(EE_BYTE_MEMPIONLY);
   memdoublepi = EEPROM.readByte(EE_BYTE_MEMDOUBLEPI);
   scanholdonsignal = EEPROM.readByte(EE_BYTE_WAITONLYONSIGNAL);
+  rotaryaccelerate = EEPROM.readByte(EE_BYTE_ROTARYACCELERATE); // AAD
   TouchCalData[0] = EEPROM.readUInt(EE_UINT16_CALTOUCH1);
   TouchCalData[1] = EEPROM.readUInt(EE_UINT16_CALTOUCH2);
   TouchCalData[2] = EEPROM.readUInt(EE_UINT16_CALTOUCH3);
@@ -852,7 +859,7 @@ void setup() {
     Udp.stop();
     tft.fillRect(184, 230, 16, 6, SignificantColor);
   }
-  delay(1500);
+  delay(100);
 
   radio.setVolume(VolSet);
   radio.setOffset(LevelOffset);
@@ -862,6 +869,7 @@ void setup() {
     radio.setAMAttenuation(amgain);
   }
   radio.setStereoLevel(StereoLevel);
+  radio.setStereoRange(StereoRange); // AAD
   radio.setHighCutLevel(HighCutLevel);
   radio.setHighCutOffset(HighCutOffset);
   radio.clearRDS(fullsearchrds);
@@ -1000,14 +1008,16 @@ void loop() {
     }
   }
 
-  if (millis() >= tuningtimer + 200) {
+  if (millis() >= tuningtimer + 200) rdsflagreset = false; // AAD
+
+  if (millis() >= tuningtimer + 2000) { // AAD
     if (store) {
-      detachInterrupt(digitalPinToInterrupt(ROTARY_PIN_A));
-      detachInterrupt(digitalPinToInterrupt(ROTARY_PIN_B));
+      //detachInterrupt(digitalPinToInterrupt(ROTARY_PIN_A)); // AAD
+      //detachInterrupt(digitalPinToInterrupt(ROTARY_PIN_B)); // AAD
       StoreFrequency();
       store = false;
-      attachInterrupt(digitalPinToInterrupt(ROTARY_PIN_A), read_encoder, CHANGE);
-      attachInterrupt(digitalPinToInterrupt(ROTARY_PIN_B), read_encoder, CHANGE);
+      //attachInterrupt(digitalPinToInterrupt(ROTARY_PIN_A), read_encoder, CHANGE); // AAD
+      //attachInterrupt(digitalPinToInterrupt(ROTARY_PIN_B), read_encoder, CHANGE); // AAD
     }
     rdsflagreset = false;
   }
@@ -1259,6 +1269,10 @@ void loop() {
       }
     } else {
       if (BWtune) doBWtuneUp(); else KeyUp();
+      if (rotaryaccelerate && rotarycounter > 2 && !BWtune && !menu) { // AAD
+        for (int i = 0; i < rotarycounteraccelerator; i++) KeyUp();
+        rotarycounter = 0;
+      }
       if (screensaverset && !BWtune && !menu && !screensavertriggered) ScreensaverTimerRestart();
     }
   }
@@ -1274,6 +1288,10 @@ void loop() {
       }
     } else {
       if (BWtune) doBWtuneDown(); else KeyDown();
+      if (rotaryaccelerate && rotarycounter > 2 && !BWtune && !menu) { // AAD
+        for (int i = 0; i < rotarycounteraccelerator; i++) KeyDown();
+        rotarycounter = 0;
+      }
       if (screensaverset && !BWtune && !menu && !screensavertriggered) ScreensaverTimerRestart();
     }
   }
@@ -3051,8 +3069,8 @@ void ShowFreq(int mode) {
     }
   }
 
-  detachInterrupt(digitalPinToInterrupt(ROTARY_PIN_A));
-  detachInterrupt(digitalPinToInterrupt(ROTARY_PIN_B));
+  //detachInterrupt(digitalPinToInterrupt(ROTARY_PIN_A)); // AAD
+  //detachInterrupt(digitalPinToInterrupt(ROTARY_PIN_B)); // AAD
 
   if (band > BAND_GAP) {
     switch (band) {
@@ -3138,8 +3156,8 @@ void ShowFreq(int mode) {
       }
     }
   }
-  attachInterrupt(digitalPinToInterrupt(ROTARY_PIN_A), read_encoder, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(ROTARY_PIN_B), read_encoder, CHANGE);
+  //attachInterrupt(digitalPinToInterrupt(ROTARY_PIN_A), read_encoder, CHANGE); // AAD
+  //attachInterrupt(digitalPinToInterrupt(ROTARY_PIN_B), read_encoder, CHANGE); // AAD
 
   if (spispeed == 7) setAutoSpeedSPI();
   rdsreset = true;
@@ -4028,6 +4046,7 @@ void TuneUp() {
   if (stepsize == 2) temp = 10;
   if (stepsize == 3) temp = 100;
   if (stepsize == 4) temp = 1000;
+  if (rotaryaccelerate && rotarycounter > 2) temp *= 2; // AAD
 
   if (band == BAND_FM) {
     frequency += temp;
@@ -4089,6 +4108,7 @@ void TuneUp() {
     radio.SetFreqAM(frequency_AM);
     frequency_MW = frequency_AM;
   } else if (band == BAND_SW) {
+    if (rotaryaccelerate && rotarycounter > 2) temp *= 2; // AAD
     frequency_AM += temp;
     if (frequency_AM > SWHighEdgeSet) {
       frequency_AM = SWLowEdgeSet;
@@ -4150,6 +4170,7 @@ void TuneDown() {
   if (stepsize == 2) temp = 10;
   if (stepsize == 3) temp = 100;
   if (stepsize == 4) temp = 1000;
+  if (rotaryaccelerate && rotarycounter > 2) temp *= 2; // AAD
 
   if (band == BAND_FM) {
     frequency -= temp;
@@ -4186,6 +4207,7 @@ void TuneDown() {
     radio.SetFreqAM(frequency_AM);
     frequency_MW = frequency_AM;
   } else if (band == BAND_SW) {
+    if (rotaryaccelerate && rotarycounter > 2) temp *= 2; // AAD
     frequency_AM -= temp;
     if (frequency_AM < SWLowEdgeSet) {
       frequency_AM = SWHighEdgeSet;
@@ -4288,15 +4310,22 @@ void SetTunerPatch() {
 }
 
 void read_encoder() {
+  if (!digitalRead(ROTARY_PIN_A) || !digitalRead(ROTARY_PIN_B)) { // AAD
+    if (millis() - rotarytimer >= 15) { rotarycounteraccelerator = 2; rotarycounter = 0; } // Steady fast
+    if (millis() - rotarytimer >= 30) { rotarycounteraccelerator = 4; rotarycounter = 0; }
+    if (millis() - rotarytimer >= 45) { rotarycounteraccelerator = 6; rotarycounter = 0; } // Quick flicks
+  }
+
   static uint8_t old_AB = 3;
   static int8_t encval = 0;
-  static const int8_t enc_states[]  = {0, -1, 1, 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 1, -1, 0};
+  static const int8_t enc_states[] = {0, -1, 1, 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 1, -1, 0};
 
   old_AB <<= 2;
 
   if (digitalRead(ROTARY_PIN_A)) old_AB |= 0x02;
   if (digitalRead(ROTARY_PIN_B)) old_AB |= 0x01;
   encval += enc_states[( old_AB & 0x0f )];
+  if (!(255 - old_AB)) encval = 0; // Unstick -2 or 2 // AAD
 
   if (optenc) {
     if (encval > 4) {
@@ -4309,9 +4338,13 @@ void read_encoder() {
   } else {
     if (encval > 3) {
       if (rotarymode) rotary = -1; else rotary = 1;
+      rotarycounter++; // AAD
+      rotarytimer = millis(); // AAD
       encval = 0;
     } else if (encval < -3) {
       if (rotarymode) rotary = 1; else rotary = -1;
+      rotarycounter++; // AAD
+      rotarytimer = millis(); // AAD
       encval = 0;
     }
   }
@@ -4355,6 +4388,7 @@ void DefaultSettings() {
   EEPROM.writeUInt(EE_UINT16_FMHIGHEDGESET, 1080);
   EEPROM.writeByte(EE_BYTE_CONTRASTSET, 50);
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, 0);
+  EEPROM.writeByte(EE_BYTE_STEREORANGE, 24); // AAD
   EEPROM.writeByte(EE_BYTE_BANDFM, FM_BAND_ALL);
   EEPROM.writeByte(EE_BYTE_BANDAM, AM_BAND_ALL);
   EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, 70);
@@ -4451,6 +4485,7 @@ void DefaultSettings() {
   EEPROM.writeByte(EE_BYTE_MEMPIONLY, 1);
   EEPROM.writeByte(EE_BYTE_MEMDOUBLEPI, 0);
   EEPROM.writeByte(EE_BYTE_WAITONLYONSIGNAL, 1);
+  EEPROM.writeByte(EE_BYTE_ROTARYACCELERATE, 1); // AAD
   EEPROM.writeUInt(EE_UINT16_CALTOUCH1, 300);
   EEPROM.writeUInt(EE_UINT16_CALTOUCH2, 3450);
   EEPROM.writeUInt(EE_UINT16_CALTOUCH3, 300);
@@ -4629,6 +4664,7 @@ void endMenu() {
   EEPROM.writeUInt(EE_UINT16_FMHIGHEDGESET, HighEdgeSet);
   EEPROM.writeByte(EE_BYTE_CONTRASTSET, ContrastSet);
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, StereoLevel);
+  EEPROM.writeByte(EE_BYTE_STEREORANGE, StereoRange); // AAD
   EEPROM.writeByte(EE_BYTE_BANDFM, bandFM);
   EEPROM.writeByte(EE_BYTE_BANDAM, bandAM);
   EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, HighCutLevel);
@@ -4705,6 +4741,7 @@ void endMenu() {
   EEPROM.writeByte(EE_BYTE_MEMPIONLY, mempionly);
   EEPROM.writeByte(EE_BYTE_MEMDOUBLEPI, memdoublepi);
   EEPROM.writeByte(EE_BYTE_WAITONLYONSIGNAL, scanholdonsignal);
+  EEPROM.writeByte(EE_BYTE_ROTARYACCELERATE, rotaryaccelerate); // AAD
   EEPROM.commit();
   if (af == 2) radio.rds.afreg = true; else radio.rds.afreg = false;
   Serial.end();
