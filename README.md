@@ -2,6 +2,10 @@
 [![HitCount](https://hits.dwyl.com/PE5PVB/TEF6686_ESP32.svg)](https://hits.dwyl.com/PE5PVB/TEF6686_ESP32)
 [![License](https://img.shields.io/badge/license%20-%20GNU_GPLv3-GPLv3?color=blue)](https://github.com/PE5PVB/TEF6686_ESP32/blob/main/LICENSE)
 
+# Ideal FM-DX Webserver settings:
+
+![395626788-f90629fb-6204-4a08-a1ec-950c99a51487](https://github.com/user-attachments/assets/b9d53e8c-33a1-4f3c-8885-4d78ce18dca0)
+
 # Note:
 The version in the repository is an ongoing development. It could and will contain bugs. To make sure you use the latest fully tested firmware, check the releases!
 
