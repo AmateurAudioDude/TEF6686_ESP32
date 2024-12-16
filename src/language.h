@@ -5,7 +5,7 @@
 
 // [number of languages][number of texts]
 
-static const char* const myLanguage[18][286] PROGMEM = {
+static const char* const myLanguage[18][289] PROGMEM = {
   { "English", // English
     "Rotary direction changed", // 1
     "Please release button", // 2
@@ -291,7 +291,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Nederlands", // Dutch
@@ -579,7 +582,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Druk op aangegeven hoeken", // 282
     "om scherm te calibreren", // 283
     "Scherm inversie gewijzigd", // 284
-    "Selecteer bandbreedte" // 285
+    "Selecteer bandbreedte", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Polski", // Polish
@@ -867,7 +873,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Naciśnij zaznaczony róg", // 282
     "Aby skalibrować ekran", // 283
     "Inwersja kolorów wyświetlacza", // 284
-    "Wybierz szer. pasma" // 285
+    "Wybierz szer. pasma", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Hrvatski", // Croatian
@@ -1155,7 +1164,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Ελληνικά", // Greek
@@ -1443,7 +1455,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Πιέστε την\nεπισημασμένη γωνία", // 282
     "Για βαθμονόμηση\nτης οθόνης αφής", // 283
     "Εναλλαγή αναστροφής οθόνης", // 284
-    "Επιλογή εύρους μπάντας" // 285
+    "Επιλογή εύρους μπάντας", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Română", // Romanian
@@ -1731,7 +1746,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Deutsch", // German
@@ -2019,7 +2037,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Markierte Ecke drücken", // 282
     "zum Kalibrieren des Touchscrees", // 283
     "Bildschirmumkehrung umschalten", // 284
-    "Bandbreite wählen" // 285
+    "Bandbreite wählen", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Český", // Czech
@@ -2307,7 +2328,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Magyar", // Hungarian
@@ -2595,7 +2619,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Français", // French
@@ -2883,7 +2910,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Appuyez sur l'angle\nmis en évidence", // 282
     "Pour calibrer l'écran tactile", // 283
     "Inversion d'affichage bascules", // 284
-    "Sélectionner la bande passante" // 285
+    "Sélectionner la bande passante", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Български", // Bulgarian
@@ -3171,7 +3201,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Русский", // Russian
@@ -3459,7 +3492,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Нажмите на подсвеченный угол", // 282
     "Калибровка тачскрина", // 283
     "Переключение инверсии экрана", // 284
-    "Выбрать ширину полосы" // 285
+    "Выбрать ширину полосы," // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Українська", // Ukranian
@@ -3747,7 +3783,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Italiano", // Italian
@@ -4035,7 +4074,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Premi l'angolo evidenziato", // 282
     "Per calibrare lo schermo touch", // 283
     "Inversione colore schermo", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Simplified Chinese", // Simplified Chinese
@@ -4323,7 +4365,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Norsk", // Norwegian
@@ -4611,7 +4656,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Press highlighted corner", // 282
     "To calibrate touchscreen", // 283
     "Screen inversion toggles", // 284
-    "Select Bandwidth" // 285
+    "Select Bandwidth", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Español", // Spanish
@@ -4899,7 +4947,10 @@ static const char* const myLanguage[18][286] PROGMEM = {
     "Presione en el\nángulo resaltado", // 282
     "Para calibrar\nla pantalla táctil", // 283
     "Cambio de reverso\nde la pantalla", // 284
-    "Seleccionar ancho de banda" // 285
+    "Seleccionar ancho de banda", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration" // 288 // AAD
   },
 
   { "Português", // Portuguese

@@ -706,6 +706,7 @@ class TEF6686 {
     void setFMSI_Gain(uint16_t band1, uint16_t band2, uint16_t band3, uint16_t band4);
     void setFMSI_Bias(int16_t band1, int16_t band2, int16_t band3, int16_t band4);
     void setStereoLevel(uint8_t start);
+    void setStereoRange(uint8_t start); // AAD
     void setUnMute();
     void setVolume(int8_t volume);
     void tone(uint16_t time, int16_t amplitude, uint16_t frequency);
@@ -780,5 +781,7 @@ class TEF6686 {
     uint16_t doubletestfreq;
     time_t lastrdstime;
     int32_t lasttimeoffset;
+    uint8_t stereoStartLevel; // AAD
+    uint8_t stereoStartRange; // AAD
 };
 #endif

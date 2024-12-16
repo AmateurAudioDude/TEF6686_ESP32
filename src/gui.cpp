@@ -8,7 +8,7 @@
 #include <cstring>
 
 byte menuitem;
-byte items[10] = {10, static_cast<byte>(dynamicspi ? 10 : 9), 7, 10, 10, 10, 9, 6, 9, 9};
+byte items[10] = {10, static_cast<byte>(dynamicspi ? 10 : 9), 8, 10, 10, 10, 9, 6, 10, 9}; // AAD
 extern mem presets[];
 bool setWiFiConnectParam = false;
 
@@ -1349,6 +1349,18 @@ void ShowOneLine(byte position, byte item, bool selected) {
           break;
 #endif
 
+        case AUDIOSETTINGS: // AAD
+          FullLineSprite.setTextDatum(TL_DATUM);
+          FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString(removeNewline(myLanguage[language][286]), 6, 2);
+
+          FullLineSprite.setTextDatum(TR_DATUM);
+          FullLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+          if (StereoRange != 0) FullLineSprite.drawString(String(StereoRange, DEC), 258, 2);
+          if (StereoRange != 0) FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString((StereoRange != 0 ? "dB" : myLanguage[language][30]), 298, 2);
+          break;
+
         case DISPLAYSETTINGS:
           FullLineSprite.setTextDatum(TL_DATUM);
           FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
@@ -1527,6 +1539,15 @@ void ShowOneLine(byte position, byte item, bool selected) {
               FullLineSprite.drawString((spispeed == SPI_SPEED_DEFAULT ? String(myLanguage[language][204]) + " " + String(SPI_FREQUENCY / 1000000, DEC) : String(spispeed * 10, DEC)), 258, 2);
             }
           }
+          break;
+
+        case DXMODE: // AAD
+          FullLineSprite.setTextDatum(TL_DATUM);
+          FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString(removeNewline(myLanguage[language][288]), 6, 2);
+          FullLineSprite.setTextDatum(TR_DATUM);
+          FullLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+          FullLineSprite.drawString((rotaryaccelerate ? myLanguage[language][42] : myLanguage[language][30]), 298, 2);
           break;
 
         case DISPLAYSETTINGS:
@@ -2174,6 +2195,20 @@ void MenuUp() {
             OneBigLineSprite.pushSprite(24, 118);
             radio.setDeemphasis(fmdeemphasis);
             break;
+
+          case ITEM8: // AAD
+            StereoRange ++;
+            if (StereoRange > 30) StereoRange = 6;
+
+            OneBigLineSprite.setTextDatum(TL_DATUM);
+            OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+            if (StereoRange != 0) OneBigLineSprite.drawString("dB", 155, 0);
+            if (StereoRange != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+            OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+            OneBigLineSprite.drawString((StereoRange != 0 ? String(StereoRange, DEC) : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            radio.setStereoRange(StereoRange);
+            break;
         }
         break;
 
@@ -2730,6 +2765,13 @@ void MenuUp() {
             OneBigLineSprite.drawString((scanholdonsignal ? myLanguage[language][42] : myLanguage[language][30]), 135, 0);
             OneBigLineSprite.pushSprite(24, 118);
             break;
+
+          case ITEM10: // AAD
+            rotaryaccelerate = !rotaryaccelerate;
+
+            OneBigLineSprite.drawString((rotaryaccelerate ? myLanguage[language][42] : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            break;
         }
         break;
 
@@ -3117,6 +3159,20 @@ void MenuDown() {
             OneBigLineSprite.drawString((fmdeemphasis != DEEMPHASIS_NONE ? (fmdeemphasis == DEEMPHASIS_50 ? String(FM_DEEMPHASIS_50, DEC) : String(FM_DEEMPHASIS_75, DEC)) : myLanguage[language][30]), 135, 0);
             OneBigLineSprite.pushSprite(24, 118);
             radio.setDeemphasis(fmdeemphasis);
+            break;
+
+          case ITEM8: // AAD
+            StereoRange --;
+            if (StereoRange < 6 || StereoRange > 30) StereoRange = 30;
+
+            OneBigLineSprite.setTextDatum(TL_DATUM);
+            OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+            if (StereoRange != 0) OneBigLineSprite.drawString("dB", 155, 0);
+            if (StereoRange != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+            OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+            OneBigLineSprite.drawString((StereoRange != 0 ? String(StereoRange, DEC) : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            radio.setStereoRange(StereoRange);
             break;
         }
         break;
@@ -3677,6 +3733,13 @@ void MenuDown() {
             OneBigLineSprite.drawString((scanholdonsignal ? myLanguage[language][42] : myLanguage[language][30]), 135, 0);
             OneBigLineSprite.pushSprite(24, 118);
             break;
+
+          case ITEM10: // AAD
+            rotaryaccelerate = !rotaryaccelerate;
+
+            OneBigLineSprite.drawString((rotaryaccelerate ? myLanguage[language][42] : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            break;
         }
         break;
 
@@ -4104,6 +4167,18 @@ void DoMenu() {
             if (fmdeemphasis != DEEMPHASIS_NONE) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
             OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
             OneBigLineSprite.drawString((fmdeemphasis != DEEMPHASIS_NONE ? (fmdeemphasis == DEEMPHASIS_50 ? String(FM_DEEMPHASIS_50, DEC) : String(FM_DEEMPHASIS_75, DEC)) : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            break;
+
+          case ITEM8: // AAD
+            Infoboxprint(myLanguage[language][287]);
+
+            OneBigLineSprite.setTextDatum(TL_DATUM);
+            OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+            if (StereoRange != 0) OneBigLineSprite.drawString("dB", 155, 0);
+            if (StereoRange != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+            OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+            OneBigLineSprite.drawString((StereoRange != 0 ? String(StereoRange, DEC) : myLanguage[language][30]), 135, 0);
             OneBigLineSprite.pushSprite(24, 118);
             break;
         }
@@ -4667,6 +4742,13 @@ void DoMenu() {
             Infoboxprint(myLanguage[language][281]);
 
             OneBigLineSprite.drawString((scanholdonsignal ? myLanguage[language][42] : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            break;
+
+          case ITEM10: // AAD
+            Infoboxprint(myLanguage[language][288]);
+
+            OneBigLineSprite.drawString((rotaryaccelerate ? myLanguage[language][42] : myLanguage[language][30]), 135, 0);
             OneBigLineSprite.pushSprite(24, 118);
             break;
         }

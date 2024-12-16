@@ -56,6 +56,7 @@ extern bool rdsreset;
 extern bool RDSstatus;
 extern bool RDSstatusold;
 extern bool rdsstereoold;
+extern bool rotaryaccelerate; // AAD
 extern bool usesquelch;
 extern bool scandxmode;
 extern bool scanholdonsignal;
@@ -130,6 +131,7 @@ extern byte stationlistid;
 extern int8_t CNold;
 extern byte StereoLevel;
 extern byte StereoLevel;
+extern byte StereoRange; // AAD
 extern byte submenu;
 extern byte subnetclient;
 extern byte TEF;
