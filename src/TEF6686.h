@@ -705,6 +705,8 @@ class TEF6686 {
     void setFMSI_Time(uint16_t attack, uint16_t decay);
     void setFMSI_Gain(uint16_t band1, uint16_t band2, uint16_t band3, uint16_t band4);
     void setFMSI_Bias(int16_t band1, int16_t band2, int16_t band3, int16_t band4);
+    void setControlSensitivity(uint16_t level); // AAD
+    void setLowLevelSensitivity(uint16_t level); // AAD
     void setStereoLevel(uint8_t start);
     void setStereoRange(uint8_t start); // AAD
     void setUnMute();
@@ -781,6 +783,10 @@ class TEF6686 {
     uint16_t doubletestfreq;
     time_t lastrdstime;
     int32_t lasttimeoffset;
+    uint8_t autoBandwidth; // AAD
+    uint16_t setBandwidth; // AAD
+    uint16_t setFMControlSensitivity; // AAD
+    uint16_t setFMLowLevelSensitivity; // AAD
     uint8_t stereoStartLevel; // AAD
     uint8_t stereoStartRange; // AAD
 };

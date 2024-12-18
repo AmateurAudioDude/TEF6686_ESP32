@@ -5,7 +5,7 @@
 
 // [number of languages][number of texts]
 
-static const char* const myLanguage[18][289] PROGMEM = {
+static const char* const myLanguage[18][291] PROGMEM = {
   { "English", // English
     "Rotary direction changed", // 1
     "Please release button", // 2
@@ -294,7 +294,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Nederlands", // Dutch
@@ -585,7 +587,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Selecteer bandbreedte", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Polski", // Polish
@@ -876,7 +880,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Wybierz szer. pasma", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Hrvatski", // Croatian
@@ -1167,7 +1173,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Ελληνικά", // Greek
@@ -1458,7 +1466,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Επιλογή εύρους μπάντας", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Română", // Romanian
@@ -1749,7 +1759,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Deutsch", // German
@@ -2040,7 +2052,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Bandbreite wählen", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Český", // Czech
@@ -2331,7 +2345,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Magyar", // Hungarian
@@ -2622,7 +2638,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Français", // French
@@ -2913,7 +2931,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Sélectionner la bande passante", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Български", // Bulgarian
@@ -3204,7 +3224,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Русский", // Russian
@@ -3495,7 +3517,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Выбрать ширину полосы," // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Українська", // Ukranian
@@ -3786,7 +3810,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Italiano", // Italian
@@ -4077,7 +4103,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Simplified Chinese", // Simplified Chinese
@@ -4368,7 +4396,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Norsk", // Norwegian
@@ -4659,7 +4689,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Select Bandwidth", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Español", // Spanish
@@ -4950,7 +4982,9 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Seleccionar ancho de banda", // 285
     "Set Stereo level range", // 286 // AAD
     "Stereo slope", // 287 // AAD
-    "Rotary acceleration" // 288 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   },
 
   { "Português", // Portuguese
@@ -5238,7 +5272,12 @@ static const char* const myLanguage[18][289] PROGMEM = {
     "Pressione o\ncanto inscrito", // 282
     "Para calibração\nda tela de toque", // 283
     "Alternar a inversão da tela", // 284
-    "Selecione largura de banda" // 285
+    "Selecione largura de banda", // 285
+    "Set Stereo level range", // 286 // AAD
+    "Stereo slope", // 287 // AAD
+    "Rotary acceleration", // 288 // AAD
+    "FM control sensitivity", // 289 // AAD
+    "FM low level sensitivity" // 290 // AAD
   }
 };
 #endif
