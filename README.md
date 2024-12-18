@@ -1,6 +1,14 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/PE5PVB/TEF6686_ESP32#contributing)
 [![License](https://img.shields.io/badge/license%20-%20GNU_GPLv3-GPLv3?color=blue)](https://github.com/PE5PVB/TEF6686_ESP32/blob/main/LICENSE)
 
+# Changes
+
+1. Band scan bandwidth/delay fix for beta 10
+2. Rotary skipping fix
+3. Rotary acceleration menu item
+4. Stereo level range menu item
+5. Auto BW sensitivity menu items
+
 ## Ideal FM-DX Webserver settings (includes stereo noise reduction, for TEF6686 only):
 
 ![tef](https://github.com/user-attachments/assets/8666e73b-3f0c-452d-8f13-72e6535ee0f0)
