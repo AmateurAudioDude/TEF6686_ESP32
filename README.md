@@ -9,9 +9,9 @@
 4. Stereo level range menu item
 5. Auto BW sensitivity menu items
 
-## Ideal FM-DX Webserver settings (includes stereo noise reduction, for TEF6686 only):
+### Ideal FM-DX Webserver settings (stereo noise reduction settings for TEF6686 only):
 
-![tef](https://github.com/user-attachments/assets/8666e73b-3f0c-452d-8f13-72e6535ee0f0)
+![tef](https://github.com/user-attachments/assets/2548961d-5cce-49ea-98c5-cc2e2f899088)
 
 # Note:
 The version in the repository is an ongoing development. It could and will contain bugs. To make sure you use the latest fully tested firmware, check the releases!
