@@ -22,6 +22,26 @@ void devTEF_Set_Cmd(TEF_MODULE module, uint8_t cmd, uint16_t len, ...) {
   }
 
   va_end(vArgs);
+  /*
+  Serial.println("Buffer (Decimal):");
+  for (i = 1; i < len; i++) {
+    Serial.print("Index ");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.print(buf[i], DEC);
+    if (i + 1 < len) {
+      int actual_value = (buf[i] << 8) | buf[i + 1];
+      Serial.print("  (Actual value: ");
+      Serial.print(actual_value, DEC);
+      Serial.print(")");
+      i++;
+    }
+    Serial.println();
+  }
+  Serial.print("Tuner_WriteBuffer len: ");
+  Serial.println(len);
+  Serial.println("==============================");
+  */
   Tuner_WriteBuffer(buf, len);
 }
 
@@ -43,8 +63,8 @@ void devTEF_Radio_Tune_AM (uint16_t frequency) {
   devTEF_Set_Cmd(TEF_AM, Cmd_Tune_To, 7, 1, frequency);
 }
 
-void devTEF_Radio_Set_Bandwidth(uint8_t mode, uint16_t bandwidth) {
-  devTEF_Set_Cmd(TEF_FM, Cmd_Set_Bandwidth, 7, mode, bandwidth);
+void devTEF_Radio_Set_Bandwidth(uint8_t mode, uint16_t bandwidth, uint16_t controllevel, uint16_t lowlevel) { // AAD
+  devTEF_Set_Cmd(TEF_FM, Cmd_Set_Bandwidth, 11, mode, bandwidth, controllevel, lowlevel); // AAD
 }
 
 void devTEF_Radio_Set_BandwidthAM(uint8_t mode, uint16_t bandwidth) {
