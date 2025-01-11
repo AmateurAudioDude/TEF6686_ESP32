@@ -170,6 +170,7 @@ byte BWtemp;
 byte charwidth = 8;
 byte hardwaremodel;
 byte ContrastSet;
+byte ControlSensitivity; // AAD
 byte CurrentSkin;
 byte CurrentTheme;
 byte displayflip;
@@ -188,12 +189,13 @@ byte amgain;
 byte freqoldcount;
 byte HighCutLevel;
 byte HighCutOffset;
-byte items[10] = {10, static_cast<byte>(dynamicspi ? 10 : 9), 7, 10, 10, 10, 9, 7, 10, 9};
+byte items[10] = {10, static_cast<byte>(dynamicspi ? 10 : 9), 10, 10, 10, 10, 9, 7, 10, 9}; // AAD
 byte iMSEQ;
 byte iMSset;
 byte language;
 byte licold;
 byte longbandpress;
+byte LowLevelSensitivity; // AAD
 byte memdoublepi;
 byte memorypos;
 byte memoryposold;
@@ -225,6 +227,7 @@ byte stationlistid;
 byte nowToggleSWMIBand = 1;
 byte stepsize;
 byte StereoLevel;
+byte StereoRange; // AAD
 byte subnetclient;
 byte TEF;
 byte tot;
@@ -477,7 +480,10 @@ void setup() {
   LowEdgeSet = EEPROM.readUInt(EE_UINT16_FMLOWEDGESET);
   HighEdgeSet = EEPROM.readUInt(EE_UINT16_FMHIGHEDGESET);
   ContrastSet = EEPROM.readByte(EE_BYTE_CONTRASTSET);
+  ControlSensitivity = EEPROM.readByte(EE_BYTE_CONTROLSENSITIVITY); // AAD
+  LowLevelSensitivity = EEPROM.readByte(EE_BYTE_LOWLEVELSENSITIVITY); // AAD
   StereoLevel = EEPROM.readByte(EE_BYTE_STEREOLEVEL);
+  StereoRange = EEPROM.readByte(EE_BYTE_STEREORANGE); // AAD
   bandFM = EEPROM.readByte(EE_BYTE_BANDFM);
   bandAM = EEPROM.readByte(EE_BYTE_BANDAM);
   HighCutLevel = EEPROM.readByte(EE_BYTE_HIGHCUTLEVEL);
@@ -885,7 +891,7 @@ void setup() {
     Udp.stop();
     tft.fillRect(184, 230, 16, 6, SignificantColor);
   }
-  delay(1500);
+  delay(150);
 
   radio.setVolume(VolSet);
   radio.setOffset(LevelOffset);
@@ -894,7 +900,10 @@ void setup() {
     radio.setAMCoChannel(amcodect, amcodectcount);
     radio.setAMAttenuation(amgain);
   }
+  radio.setControlSensitivity(ControlSensitivity); // AAD
+  radio.setLowLevelSensitivity(LowLevelSensitivity); // AAD
   radio.setStereoLevel(StereoLevel);
+  radio.setStereoRange(StereoRange); // AAD
   radio.setHighCutLevel(HighCutLevel);
   radio.setHighCutOffset(HighCutOffset);
   radio.clearRDS(fullsearchrds);
@@ -3529,7 +3538,8 @@ void showAutoSquelch(bool mode) {
 }
 
 void doSquelch() {
-  if (!XDRGTKUSB && !XDRGTKTCP && usesquelch && !autosquelch) Squelch = map(analogRead(PIN_POT), 0, 4095, -100, 920);
+  if (!XDRGTKUSB && !XDRGTKTCP && usesquelch && !autosquelch) Squelch = map(analogRead(PIN_POT), 0, 3584, 920, -100); // AAD
+  if (Squelch < -95) Squelch = -100; // AAD
   if (Squelch < - 800) Squelch = -100;
   if (Squelch > 900) Squelch = 920;
 
@@ -4446,14 +4456,17 @@ void DefaultSettings() {
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_OIRT, FREQ_FM_OIRT_START);
   EEPROM.writeByte(EE_BYTE_VOLSET, 0);
   EEPROM.writeUInt(EE_UINT16_CONVERTERSET, 0);
-  EEPROM.writeUInt(EE_UINT16_FMLOWEDGESET, 875);
+  EEPROM.writeUInt(EE_UINT16_FMLOWEDGESET, 870);
   EEPROM.writeUInt(EE_UINT16_FMHIGHEDGESET, 1080);
   EEPROM.writeByte(EE_BYTE_CONTRASTSET, 50);
+  EEPROM.writeByte(EE_BYTE_CONTROLSENSITIVITY, 8); // AAD
+  EEPROM.writeByte(EE_BYTE_LOWLEVELSENSITIVITY, 8); // AAD
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, 0);
+  EEPROM.writeByte(EE_BYTE_STEREORANGE, 24); // AAD
   EEPROM.writeByte(EE_BYTE_BANDFM, FM_BAND_ALL);
   EEPROM.writeByte(EE_BYTE_BANDAM, AM_BAND_ALL);
-  EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, 70);
-  EEPROM.writeByte(EE_BYTE_HIGHCUTOFFSET, 0);
+  EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, 50);
+  EEPROM.writeByte(EE_BYTE_HIGHCUTOFFSET, 30);
   EEPROM.writeByte(EE_BYTE_LEVELOFFSET, 0);
   EEPROM.writeByte(EE_BYTE_RTBUFFER, 1);
   EEPROM.writeByte(EE_BYTE_EDGEBEEP, 0);
@@ -4478,7 +4491,7 @@ void DefaultSettings() {
   EEPROM.writeByte(EE_BYTE_SUBNETCLIENT, 1);
   EEPROM.writeByte(EE_BYTE_SHOWSWMIBAND, 1);
   EEPROM.writeByte(EE_BYTE_RDS_FILTER, 1);
-  EEPROM.writeByte(EE_BYTE_RDS_PIERRORS, 0);
+  EEPROM.writeByte(EE_BYTE_RDS_PIERRORS, 1);
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_LW, 180);
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_MW, 540);
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_SW, 1800);
@@ -4497,11 +4510,11 @@ void DefaultSettings() {
   EEPROM.writeUInt(EE_UINT16_LOWEDGEOIRTSET, 0);
   EEPROM.writeUInt(EE_UINT16_HIGHEDGEOIRTSET, 0);
   EEPROM.writeByte(EE_BYTE_POWEROPTIONS, 1);
-  EEPROM.writeByte(EE_BYTE_CURRENTTHEME, 0);
+  EEPROM.writeByte(EE_BYTE_CURRENTTHEME, 5);
   EEPROM.writeByte(EE_BYTE_FMDEFAULTSTEPSIZE, 1);
   EEPROM.writeByte(EE_BYTE_SCREENSAVERSET, 0);
   EEPROM.writeInt(EE_INT16_AMLEVELOFFSET, 0);
-  EEPROM.writeByte(EE_BYTE_UNIT, 0);
+  EEPROM.writeByte(EE_BYTE_UNIT, 2);
   EEPROM.writeByte(EE_BYTE_AF, 0);
   EEPROM.writeByte(EE_BYTE_STEREO, 1);
   EEPROM.writeByte(EE_BYTE_BATTERY_OPTIONS, BATTERY_VALUE);
@@ -4726,6 +4739,9 @@ void endMenu() {
   EEPROM.writeUInt(EE_UINT16_FMHIGHEDGESET, HighEdgeSet);
   EEPROM.writeByte(EE_BYTE_CONTRASTSET, ContrastSet);
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, StereoLevel);
+  EEPROM.writeByte(EE_BYTE_CONTROLSENSITIVITY, ControlSensitivity); // AAD
+  EEPROM.writeByte(EE_BYTE_LOWLEVELSENSITIVITY, LowLevelSensitivity); // AAD
+  EEPROM.writeByte(EE_BYTE_STEREORANGE, StereoRange); // AAD
   EEPROM.writeByte(EE_BYTE_BANDFM, bandFM);
   EEPROM.writeByte(EE_BYTE_BANDAM, bandAM);
   EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, HighCutLevel);
