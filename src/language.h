@@ -1,110 +1,110 @@
 #ifndef LANGUAGE_H
 #define LANGUAGE_H
 
-#define VERSION "v2.11.17"
+#define VERSION "v2.11.17 (AAD)"
 
 // [number of languages][number of texts]
 
-static const char* const myLanguage[18][297] PROGMEM = {
+static const char* const myLanguage[18][301] PROGMEM = {
   { "English", // English
-    "Rotary direction changed", // 1
-    "Please release button", // 2
-    "Screen flipped", // 3
-    "Calibrate analog meter", // 4
-    "Release button when ready", // 5
-    "encoder set to optical", // 6
-    "encoder set to standard", // 7
-    "FM/AM receiver", // 8
+    "Rotary Direction Changed", // 1
+    "Please Release Button", // 2
+    "Screen Flipped", // 3
+    "Calibrate Analog Meter", // 4
+    "Release Button When Ready", // 5
+    "Encoder Set To Optical", // 6
+    "Encoder Set To Standard", // 7
+    "FM/AM Receiver", // 8
     "Tuner: !None!", // 9
     "Volume", // 10
     "Converter", // 11
-    "Low band edge", // 12
-    "High band edge", // 13
-    "FM RF Level offset", // 14
-    "Stereo threshold", // 15
-    "High Cut corner", // 16
-    "Highcut threshold", // 17
-    "Low level threshold", // 18
+    "Low Band Edge", // 12
+    "High Band Edge", // 13
+    "FM RF Level Offset", // 14
+    "Stereo Threshold", // 15
+    "High Cut Corner", // 16
+    "Highcut Threshold", // 17
+    "Low Level Threshold", // 18
     "Brightness", // 19
-    "Set volume", // 20
-    "Set converter offset", // 21
-    "Set low band edge", // 22
-    "Set high band edge", // 23
-    "Set level offset", // 24
-    "Set Stereo sep. threshold", // 25
-    "Set high cut corner frequency", // 26
-    "Set High cut threshold", // 27
-    "Set low level threshold", // 28
-    "Set display brightness", // 29
+    "Set Volume", // 20
+    "Set Converter Offset", // 21
+    "Set Low Band Edge", // 22
+    "Set High Band Edge", // 23
+    "Set Level Offset", // 24
+    "Set Stereo Sep. Threshold", // 25
+    "Set High Cut Corner Frequency", // 26
+    "Set High Cut Threshold", // 27
+    "Set Low Level Threshold", // 28
+    "Set Display Brightness", // 29
     "Off", // 30
-    "Screen is muted!", // 31
-    "To unmute uncheck RF+ box", // 32
+    "Screen Is Muted!", // 31
+    "To Unmute Uncheck RF+ Box", // 32
     "OFF", // 33
     "SCANNING...", // 34
-    "Tuner not detected", // 35
-    "AM Antenna gain", // 36
+    "Tuner Not Detected", // 35
+    "AM Antenna Gain", // 36
     "FM AGC", // 37
-    "Show RDS errors", // 38
+    "Show RDS Errors", // 38
     "Language", // 39
-    "Choose language", // 40
+    "Choose Language", // 40
     "PRESS MODE TO EXIT AND STORE", // 41
     "On", // 42
     "Softmute FM", // 43
     "Softmute AM", // 44
-    "Beep at band edge", // 45
+    "Beep At Band Edge", // 45
     "Region", // 46
     "Europe", // 47
     "America", // 48
-    "Show underscore in RDS", // 49
-    "USB mode", // 50
-    "Wi-Fi active", // 51
+    "Show Underscore In RDS", // 49
+    "USB Mode", // 50
+    "Wi-Fi Active", // 51
     "Configure Wi-Fi", // 52
-    "Connect to: ", // 53
-    "to configure Wi-Fi", // 54
-    "Trying to connect Wi-Fi", // 55
+    "Connect To: ", // 53
+    "To Configure Wi-Fi", // 54
+    "Trying To Connect Wi-Fi", // 55
     "FAILED!", // 56
     "CONNECTED!", // 57
-    "Stationlist client IP", // 58
-    "Show SW wavelength", // 59
-    "RDS filter", // 60
-    "Show PI errors", // 61
-    "Use squelch", // 62
-    "Modulation meter", // 63
-    "AM Noise blanker", // 64
-    "FM Noise blanker", // 65
-    "Defaults loaded", // 66
-    "Audio output", // 67
-    "Allow tuning\nduring screensaver", // 68
-    "Invert display", // 69
-    "About software", // 70
-    "Main code:", // 71
+    "Stationlist Client IP", // 58
+    "Show SW Wavelength", // 59
+    "RDS Filter", // 60
+    "Show PI Errors", // 61
+    "Use Squelch", // 62
+    "Modulation Meter", // 63
+    "AM Noise Blanker", // 64
+    "FM Noise Blanker", // 65
+    "Defaults Loaded", // 66
+    "Audio Output", // 67
+    "Allow Tuning\nDuring Screensaver", // 68
+    "Invert Display", // 69
+    "About Software", // 70
+    "Main Code:", // 71
     "Contributors:", // 72
     "Unknown", // 73
-    "Screensaver options", // 74
-    "Time-out timer", // 75
-    "Screen off", // 76
+    "Screensaver Options", // 74
+    "Time-Out Timer", // 75
+    "Screen Off", // 76
     "Theme", // 77
     "Skin", // 78
-    "Detected applications", // 79
+    "Detected Applications", // 79
     "Min.", // 80
-    "Dynamic SPI speed", // 81
-    "Scan sensitivity", // 82
+    "Dynamic SPI Speed", // 81
+    "Scan Sensitivity", // 82
     "NONE", // 83
-    "Software version", // 84
-    "Frequency font", // 85
+    "Software Version", // 84
+    "Frequency Font", // 85
     "Auto", // 86
-    "No AF available", // 87
-    "No EON available", // 88
-    "No RT+ available", // 89
-    "FM default stepsize", // 90
+    "No AF Available", // 87
+    "No EON Available", // 88
+    "No RT+ Available", // 89
+    "FM Default Stepsize", // 90
     "Screensaver", // 91
     "Sec", // 92
     "PRESS BAND TO CLOSE", // 93
-    "1% brightness", // 94
-    "25% brightness", // 95
-    "50% brightness", // 96
-    "AM RF Level offset", // 97
-    "Signalmeter unit", // 98
+    "1% Brightness", // 94
+    "25% Brightness", // 95
+    "50% Brightness", // 96
+    "AM RF Level Offset", // 97
+    "Signalmeter Unit", // 98
     "Use AF", // 99
     "Select FM Band", // 100
     "Select AM Band", // 101
@@ -113,11 +113,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "SW", // 104
     "FM", // 105
     "OIRT", // 106
-    "Rotating while screen off", // 107
-    "Model selector", // 108
+    "Rotating While Screen Off", // 107
+    "Model Selector", // 108
     "Base", // 109
     "Portable", // 110
-    "Portable touch", // 111
+    "Portable Touch", // 111
     "Title", // 112
     "Album", // 113
     "Track", // 114
@@ -130,7 +130,7 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Comment", // 121
     "Genre", // 122
     "News", // 123
-    "Local news", // 124
+    "Local News", // 124
     "Stockmarket", // 125
     "Sport", // 126
     "Lottery", // 127
@@ -141,7 +141,7 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Scene", // 132
     "Cinema", // 133
     "TV", // 134
-    "Date/time", // 135
+    "Date/Time", // 135
     "Weather", // 136
     "Traffic", // 137
     "Alarm", // 138
@@ -159,42 +159,42 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Homepage", // 150
     "Subchannel", // 151
     "Hotline", // 152
-    "Studio phone", // 153
+    "Studio Phone", // 153
     "Phone", // 154
-    "SMS studio", // 155
+    "SMS Studio", // 155
     "SMS", // 156
-    "Email hotline", // 157
-    "Email studio", // 158
+    "Email Hotline", // 157
+    "Email Studio", // 158
     "Email", // 159
     "Chat", // 160
-    "Chat centre", // 161
-    "Vote question", // 162
-    "Vote centre", // 163
+    "Chat Centre", // 161
+    "Vote Question", // 162
+    "Vote Centre", // 163
     "Place", // 164
     "Appointment", // 165
     "Identifier", // 166
     "Purchase", // 167
-    "Get data", // 168
-    "MW default stepsize", // 169
+    "Get Data", // 168
+    "MW Default Stepsize", // 169
     "Tangerine", // 170
     "Ocean", // 171
     "Indigo", // 172
-    "Battery options", // 173
-    "Show voltage", // 174
-    "Show percentage", // 175
-    "RT buffering", // 176
-    "Main settings", // 177
-    "Audio settings", // 178
-    "Display settings", // 179
-    "RDS settings", // 180
-    "FM settings", // 181
-    "AM settings", // 182
+    "Battery Options", // 173
+    "Show Voltage", // 174
+    "Show Percentage", // 175
+    "RT Buffering", // 176
+    "Main Settings", // 177
+    "Audio Settings", // 178
+    "Display Settings", // 179
+    "RDS Settings", // 180
+    "FM Settings", // 181
+    "AM Settings", // 182
     "Connectivity", // 183
     "PRESS MODE TO RETURN", // 184
     "CoChannel Detector", // 185
-    "CoChannel Detector\nsensitivity", // 186
-    "CoChannel Detector\nthreshold", // 187
-    "CoChannel Detector\ncounter", // 188
+    "CoChannel Detector\nSensitivity", // 186
+    "CoChannel Detector\nThreshold", // 187
+    "CoChannel Detector\nCounter", // 188
     "MAIN", // 189
     "AUDIO", // 190
     "DISPLAY", // 191
@@ -205,34 +205,34 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "DX MODE", // 196
     "AUTO MEM", // 197
     "AM AGC", // 198
-    "FM deemphasis", // 199
+    "FM Deemphasis", // 199
     "Small", // 200
     "Large", // 201
     "All", // 202
     "Fast PS", // 203
     "Default", // 204
-    "Mute screen on\nXDRGTK connection", // 205
-    "FMSI stereo\nimprovement", // 206
-    "Function only available\non TEF6687/6689!", // 207
-    "Function not available\non selected skin!", // 208
-    "Begin scanning\nmemory channels", // 209
-    "Stop scanning\nmemory channels", // 210
-    "Wait time", // 211
-    "Start DX scanning", // 212
+    "Mute Screen On\nXDRGTK Connection", // 205
+    "FMSI Stereo\nImprovement", // 206
+    "Function Only Available\nOn TEF6687/6689!", // 207
+    "Function Not Available\nOn Selected Skin!", // 208
+    "Begin Scanning\nMemory Channels", // 209
+    "Stop Scanning\nMemory Channels", // 210
+    "Wait Time", // 211
+    "Start DX Scanning", // 212
     "FM DX Options", // 213
-    "Abort! The start channel\nis marked as skipped.", // 214
-    "Auto sort AF", // 215
-    "Memory channels", // 216
+    "Abort! The Start Channel\nIs Marked As Skipped.", // 214
+    "Auto Sort AF", // 215
+    "Memory Channels", // 216
     "Exclude", // 217
     "Only", // 218
-    "Auto cancel scan", // 219
+    "Auto Cancel Scan", // 219
     "Correct PI", // 220
     "Signal", // 221
-    "Mute audio\nwhile scanning", // 222
+    "Mute Audio\nWhile Scanning", // 222
     "AIR", // 223
-    "5 sec. bandbutton press", // 224
-    "Power off", // 225
-    "Mute screen", // 226
+    "5 Sec. Bandbutton Press", // 224
+    "Power Off", // 225
+    "Mute Screen", // 226
     "Disabled", // 227
     "None", // 228
     "News", // 229
@@ -268,41 +268,46 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Alarm!!!", // 259
     "Initial", // 260
     "Always", // 261
-    "Show clock", // 262
-    "Show long PS", // 263
-    "Start frequency", // 264
-    "Stop frequency", // 265
-    "Start memory channel", // 266
-    "Stop memory channel", // 267
-    "Only store with RDS", // 268
-    "Start auto memory", // 269
-    "Auto memory", // 270
+    "Show Clock", // 262
+    "Show Long PS", // 263
+    "Start Frequency", // 264
+    "Stop Frequency", // 265
+    "Start Memory Channel", // 266
+    "Stop Memory Channel", // 267
+    "Only Store With RDS", // 268
+    "Start Auto Memory", // 269
+    "Auto Memory", // 270
     "Stationlist ID", // 271
     "Found", // 272
-    "Abort! Out of memorychannels", // 273
-    "Abort! User pressed button", // 274
-    "Scan finished without errors", // 275
-    "Clear memory channels", // 276
-    "cleared", // 277
-    "Prevent double PI", // 278
+    "Abort! Out Of Memorychannels", // 273
+    "Abort! User Pressed Button", // 274
+    "Scan Finished Without Errors", // 275
+    "Clear Memory Channels", // 276
+    "Cleared", // 277
+    "Prevent Double PI", // 278
     "Range", // 279
     "Full", // 280
-    "Wait time on\nsignal only", // 281
-    "Press highlighted corner", // 282
-    "To calibrate touchscreen", // 283
-    "Screen inversion toggles", // 284
+    "Wait Time On\nSignal Only", // 281
+    "Press Highlighted Corner", // 282
+    "To Calibrate Touchscreen", // 283
+    "Screen Inversion Toggles", // 284
     "Select Bandwidth", // 285
-    "Your logbook", // 286
-    "Download logbook", // 287
-    "Logbook is empty", // 288
-    "Go to bottom", // 289
-    "Added to log", // 290
-    "Update failed!", // 291
-    "Clear logbook", // 292
-    "Logbook cleared", // 293
-    "Clear failed", // 294
-    "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Your Logbook", // 286
+    "Download Logbook", // 287
+    "Logbook Is Empty", // 288
+    "Go To Bottom", // 289
+    "Added To Log", // 290
+    "Update Failed!", // 291
+    "Clear Logbook", // 292
+    "Logbook Cleared", // 293
+    "Clear Failed", // 294
+    "Set NTP Time Offset", // 295
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
+
   },
 
   { "Nederlands", // Dutch
@@ -601,7 +606,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logboek geleegd", // 293
     "Legen mislukt", // 294
     "NTP tijdverschil instellen", // 295
-    "Automatisch loggen" // 296
+    "Automatisch loggen", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Polski", // Polish
@@ -900,7 +909,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Hrvatski", // Croatian
@@ -1199,7 +1212,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Ελληνικά", // Greek
@@ -1498,7 +1515,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Română", // Romanian
@@ -1797,7 +1818,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Deutsch", // German
@@ -2096,7 +2121,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbuch gelöscht", // 293
     "Löschen fehlgeschlagen", // 294
     "NTP-Zeitversatz einstellen", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Český", // Czech
@@ -2395,7 +2424,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Magyar", // Hungarian
@@ -2694,7 +2727,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Français", // French
@@ -2993,7 +3030,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Български", // Bulgarian
@@ -3292,7 +3333,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Русский", // Russian
@@ -3591,7 +3636,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Українська", // Ukranian
@@ -3890,7 +3939,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Italiano", // Italian
@@ -4189,7 +4242,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Simplified Chinese", // Simplified Chinese
@@ -4488,7 +4545,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Norsk", // Norwegian
@@ -4787,7 +4848,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Español", // Spanish
@@ -5086,7 +5151,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   },
 
   { "Português", // Portuguese
@@ -5385,7 +5454,11 @@ static const char* const myLanguage[18][297] PROGMEM = {
     "Logbook cleared", // 293
     "Clear failed", // 294
     "Set NTP time offset", // 295
-    "Autologger" // 296
+    "Autologger", // 296
+    "Set Stereo Level Range", // 297 // AAD
+    "Stereo Slope", // 298 // AAD
+    "FM Control Sensitivity", // 299 // AAD
+    "FM Low Level Sensitivity" // 300 // AAD
   }
 };
 #endif

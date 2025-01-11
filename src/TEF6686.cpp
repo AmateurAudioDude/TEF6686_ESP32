@@ -198,7 +198,9 @@ void TEF6686::setAMOffset(int8_t offset) {
 }
 
 void TEF6686::setFMBandw(uint16_t bandwidth) {
-  devTEF_Radio_Set_Bandwidth(0, bandwidth * 10);
+  setBandwidth = bandwidth; // AAD
+  autoBandwidth = 0; // AAD
+  devTEF_Radio_Set_Bandwidth(0, bandwidth * 10, setFMControlSensitivity * 100, setFMLowLevelSensitivity * 100); // AAD
 }
 
 void TEF6686::setAMBandw(uint16_t bandwidth) {
@@ -226,7 +228,9 @@ void TEF6686::setAMAttenuation(uint16_t start) {
 }
 
 void TEF6686::setFMABandw() {
-  devTEF_Radio_Set_Bandwidth(1, 3110);
+  autoBandwidth = 1; // AAD
+  setBandwidth = 311; // AAD
+  devTEF_Radio_Set_Bandwidth(1, 3110, setFMControlSensitivity * 100, setFMLowLevelSensitivity * 100); // AAD
 }
 
 void TEF6686::setiMS(bool mph) {
@@ -308,15 +312,39 @@ void TEF6686::setFMNoiseBlanker(uint16_t start) {
 }
 
 void TEF6686::setStereoLevel(uint8_t start) {
+  stereoStartLevel = start; // AAD
   if (start == 0) {
-    devTEF_Radio_Set_Stereo_Level(0, start * 10, 60);
+    devTEF_Radio_Set_Stereo_Level(0, start * 10, stereoStartRange * 10); // AAD
     devTEF_Radio_Set_Stereo_Noise(0, 240, 200);
     devTEF_Radio_Set_Stereo_Mph(0, 240, 200);
   } else {
-    devTEF_Radio_Set_Stereo_Level(3, start * 10, 60);
+    devTEF_Radio_Set_Stereo_Level(3, start * 10, stereoStartRange * 10); // AAD
     devTEF_Radio_Set_Stereo_Noise(3, 240, 200);
     devTEF_Radio_Set_Stereo_Mph(3, 240, 200);
   }
+}
+
+void TEF6686::setStereoRange(uint8_t start) { // AAD
+  stereoStartRange = start;
+  if (start == 0) {
+    devTEF_Radio_Set_Stereo_Level(0, stereoStartLevel * 10, start * 10);
+    devTEF_Radio_Set_Stereo_Noise(0, 240, 200);
+    devTEF_Radio_Set_Stereo_Mph(0, 240, 200);
+  } else {
+    devTEF_Radio_Set_Stereo_Level(3, stereoStartLevel * 10, start * 10);
+    devTEF_Radio_Set_Stereo_Noise(3, 240, 200);
+    devTEF_Radio_Set_Stereo_Mph(3, 240, 200);
+  }
+}
+
+void TEF6686::setControlSensitivity(uint16_t level) { // AAD
+  setFMControlSensitivity = level;
+  devTEF_Radio_Set_Bandwidth(autoBandwidth, setBandwidth * 10, level * 100, setFMLowLevelSensitivity * 100);
+}
+
+void TEF6686::setLowLevelSensitivity(uint16_t level) { // AAD
+  setFMLowLevelSensitivity = level;
+  devTEF_Radio_Set_Bandwidth(autoBandwidth, setBandwidth * 10, setFMControlSensitivity * 100, level * 100);
 }
 
 void TEF6686::setHighCutOffset(uint8_t start) {
