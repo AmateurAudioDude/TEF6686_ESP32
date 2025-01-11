@@ -1,9 +1,20 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/PE5PVB/TEF6686_ESP32#contributing)
-[![HitCount](https://hits.dwyl.com/PE5PVB/TEF6686_ESP32.svg)](https://hits.dwyl.com/PE5PVB/TEF6686_ESP32)
 [![License](https://img.shields.io/badge/license%20-%20GNU_GPLv3-GPLv3?color=blue)](https://github.com/PE5PVB/TEF6686_ESP32/blob/main/LICENSE)
 
 # Note:
 The version in the repository is an ongoing development. It could and will contain bugs. To make sure you use the latest fully tested firmware, check the releases!
+
+
+
+# Changes
+
+* Stereo level range menu item
+* Auto BW sensitivity menu items
+* Squelch reversed
+
+### Ideal FM-DX Webserver settings (stereo noise reduction settings for TEF6686 only):
+
+![tef](https://github.com/user-attachments/assets/2548961d-5cce-49ea-98c5-cc2e2f899088)
 
 
 
