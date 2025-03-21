@@ -70,7 +70,7 @@ void devTEF_Radio_Tune_AM (uint16_t frequency );
 void devTEF_Audio_Set_Mute(uint8_t mode);
 void devTEF_Audio_Set_Volume(int16_t volume);
 void devTEF_APPL_Set_OperationMode(bool mode);
-void devTEF_Radio_Set_Bandwidth(uint8_t mode, uint16_t bandwidth);
+void devTEF_Radio_Set_Bandwidth(uint8_t mode, uint16_t bandwidth, uint16_t controllevel, uint16_t lowlevel); // AAD
 void devTEF_Radio_Set_BandwidthAM(uint8_t mode, uint16_t bandwidth);
 void devTEF_Radio_Set_Noiseblanker_AM(uint8_t mode, uint16_t start);
 void devTEF_Radio_Set_Attenuator_AM(uint16_t start);

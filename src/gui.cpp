@@ -1397,6 +1397,18 @@ void ShowOneLine(byte position, byte item, bool selected) {
           break;
 #endif
 
+        case AUDIOSETTINGS: // AAD
+          FullLineSprite.setTextDatum(TL_DATUM);
+          FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString(removeNewline("Set Stereo Level Range"), 6, 2);
+
+          FullLineSprite.setTextDatum(TR_DATUM);
+          FullLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+          if (StereoRange != 0) FullLineSprite.drawString(String(StereoRange, DEC), 258, 2);
+          if (StereoRange != 0) FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString((StereoRange != 0 ? "dB" : myLanguage[language][30]), 298, 2);
+          break;
+
         case DISPLAYSETTINGS:
           FullLineSprite.setTextDatum(TL_DATUM);
           FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
@@ -1499,6 +1511,18 @@ void ShowOneLine(byte position, byte item, bool selected) {
           }
           break;
 
+        case AUDIOSETTINGS: // AAD
+          FullLineSprite.setTextDatum(TL_DATUM);
+          FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString(removeNewline("FM Control Sensitivity"), 6, 2);
+
+          FullLineSprite.setTextDatum(TR_DATUM);
+          FullLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+          if (ControlSensitivity != 0) FullLineSprite.drawString(String(ControlSensitivity * 10, DEC), 258, 2);
+          if (ControlSensitivity != 0) FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString((ControlSensitivity != 0 ? "%" : myLanguage[language][30]), 298, 2);
+          break;
+
         case DISPLAYSETTINGS:
           FullLineSprite.setTextDatum(TL_DATUM);
           FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
@@ -1595,6 +1619,18 @@ void ShowOneLine(byte position, byte item, bool selected) {
               FullLineSprite.drawString((spispeed == SPI_SPEED_DEFAULT ? String(myLanguage[language][204]) + " " + String(SPI_FREQUENCY / 1000000, DEC) : String(spispeed * 10, DEC)), 258, 2);
             }
           }
+          break;
+
+        case AUDIOSETTINGS: // AAD
+          FullLineSprite.setTextDatum(TL_DATUM);
+          FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString(removeNewline("FM Low Level Sensitivity"), 6, 2);
+
+          FullLineSprite.setTextDatum(TR_DATUM);
+          FullLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+          if (LowLevelSensitivity != 0) FullLineSprite.drawString(String(LowLevelSensitivity * 10, DEC), 258, 2);
+          if (LowLevelSensitivity != 0) FullLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+          FullLineSprite.drawString((LowLevelSensitivity != 0 ? "%" : myLanguage[language][30]), 298, 2);
           break;
 
         case DISPLAYSETTINGS:
@@ -3510,6 +3546,89 @@ void MenuUpDown(bool dir) {
             OneBigLineSprite.pushSprite(24, 118);
             radio.setDeemphasis(fmdeemphasis);
             break;
+
+          case ITEM8: // AAD
+              if (dir) {
+                StereoRange ++;
+                if (StereoRange > 30) StereoRange = 6;
+
+                OneBigLineSprite.setTextDatum(TL_DATUM);
+                OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+                if (StereoRange != 0) OneBigLineSprite.drawString("dB", 155, 0);
+                if (StereoRange != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+                OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+                OneBigLineSprite.drawString((StereoRange != 0 ? String(StereoRange, DEC) : myLanguage[language][30]), 135, 0);
+                OneBigLineSprite.pushSprite(24, 118);
+                radio.setStereoRange(StereoRange);
+            } else {
+                StereoRange --;
+                if (StereoRange < 6 || StereoRange > 30) StereoRange = 30;
+
+                OneBigLineSprite.setTextDatum(TL_DATUM);
+                OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+                if (StereoRange != 0) OneBigLineSprite.drawString("dB", 155, 0);
+                if (StereoRange != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+                OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+                OneBigLineSprite.drawString((StereoRange != 0 ? String(StereoRange, DEC) : myLanguage[language][30]), 135, 0);
+                OneBigLineSprite.pushSprite(24, 118);
+                radio.setStereoRange(StereoRange);
+            }
+            break;
+
+          case ITEM9: // AAD
+              if (dir) {
+                ControlSensitivity ++;
+                if (ControlSensitivity > 15) ControlSensitivity = 5;
+
+                OneBigLineSprite.setTextDatum(TL_DATUM);
+                OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+                if (ControlSensitivity != 0) OneBigLineSprite.drawString("%", 155, 0);
+                if (ControlSensitivity != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+                OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+                OneBigLineSprite.drawString((ControlSensitivity != 0 ? String(ControlSensitivity * 10, DEC) : myLanguage[language][30]), 135, 0);
+                OneBigLineSprite.pushSprite(24, 118);
+                radio.setControlSensitivity(ControlSensitivity);
+            } else {
+                ControlSensitivity --;
+                if (ControlSensitivity < 5 || ControlSensitivity > 15) ControlSensitivity = 15;
+
+                OneBigLineSprite.setTextDatum(TL_DATUM);
+                OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+                if (ControlSensitivity != 0) OneBigLineSprite.drawString("%", 155, 0);
+                if (ControlSensitivity != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+                OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+                OneBigLineSprite.drawString((ControlSensitivity != 0 ? String(ControlSensitivity * 10, DEC) : myLanguage[language][30]), 135, 0);
+                OneBigLineSprite.pushSprite(24, 118);
+                radio.setControlSensitivity(ControlSensitivity);
+            }
+            break;
+
+          case ITEM10: // AAD
+              if (dir) {
+                LowLevelSensitivity ++;
+                if (LowLevelSensitivity > 15) LowLevelSensitivity = 5;
+
+                OneBigLineSprite.setTextDatum(TL_DATUM);
+                OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+                if (LowLevelSensitivity != 0) OneBigLineSprite.drawString("%", 155, 0);
+                if (LowLevelSensitivity != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+                OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+                OneBigLineSprite.drawString((LowLevelSensitivity != 0 ? String(LowLevelSensitivity * 10, DEC) : myLanguage[language][30]), 135, 0);
+                OneBigLineSprite.pushSprite(24, 118);
+                radio.setLowLevelSensitivity(LowLevelSensitivity);
+            } else {
+                LowLevelSensitivity --;
+                if (LowLevelSensitivity < 5 || LowLevelSensitivity > 15) LowLevelSensitivity = 15;
+
+                OneBigLineSprite.setTextDatum(TL_DATUM);
+                OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+                if (LowLevelSensitivity != 0) OneBigLineSprite.drawString("%", 155, 0);
+                if (LowLevelSensitivity != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+                OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+                OneBigLineSprite.drawString((LowLevelSensitivity != 0 ? String(LowLevelSensitivity * 10, DEC) : myLanguage[language][30]), 135, 0);
+                OneBigLineSprite.pushSprite(24, 118);
+                radio.setLowLevelSensitivity(LowLevelSensitivity);
+            }
         }
         break;
 
@@ -4818,6 +4937,42 @@ void DoMenu() {
             if (fmdeemphasis != DEEMPHASIS_NONE) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
             OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
             OneBigLineSprite.drawString((fmdeemphasis != DEEMPHASIS_NONE ? (fmdeemphasis == DEEMPHASIS_50 ? String(FM_DEEMPHASIS_50, DEC) : String(FM_DEEMPHASIS_75, DEC)) : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            break;
+
+          case ITEM8: // AAD
+            Infoboxprint("Stereo Slope");
+
+            OneBigLineSprite.setTextDatum(TL_DATUM);
+            OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+            if (StereoRange != 0) OneBigLineSprite.drawString("dB", 155, 0);
+            if (StereoRange != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+            OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+            OneBigLineSprite.drawString((StereoRange != 0 ? String(StereoRange, DEC) : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            break;
+
+          case ITEM9: // AAD
+            Infoboxprint("FM Control Sensitivity");
+
+            OneBigLineSprite.setTextDatum(TL_DATUM);
+            OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+            if (ControlSensitivity != 0) OneBigLineSprite.drawString("%", 155, 0);
+            if (ControlSensitivity != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+            OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+            OneBigLineSprite.drawString((ControlSensitivity != 0 ? String(ControlSensitivity * 10, DEC) : myLanguage[language][30]), 135, 0);
+            OneBigLineSprite.pushSprite(24, 118);
+            break;
+
+          case ITEM10: // AAD
+            Infoboxprint("FM Low Level Sensitivity");
+
+            OneBigLineSprite.setTextDatum(TL_DATUM);
+            OneBigLineSprite.setTextColor(ActiveColor, ActiveColorSmooth, false);
+            if (LowLevelSensitivity != 0) OneBigLineSprite.drawString("%", 155, 0);
+            if (LowLevelSensitivity != 0) OneBigLineSprite.setTextDatum(TR_DATUM); else OneBigLineSprite.setTextDatum(TC_DATUM);
+            OneBigLineSprite.setTextColor(PrimaryColor, PrimaryColorSmooth, false);
+            OneBigLineSprite.drawString((LowLevelSensitivity != 0 ? String(LowLevelSensitivity * 10, DEC) : myLanguage[language][30]), 135, 0);
             OneBigLineSprite.pushSprite(24, 118);
             break;
         }
