@@ -1,7 +1,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
-#define VERSION "v2.20.4"
+#define VERSION "v2.20.4 (AAD)"
 
 #define ON                          1
 #define OFF                         0
@@ -344,6 +344,9 @@
 #define EE_BYTE_MEMDOUBLEPI           2229
 #define EE_STRING_RABBITEARSUSER      2230
 #define EE_STRING_RABBITEARSPASSWORD  2241
+#define EE_BYTE_STEREORANGE           2248  // AAD
+#define EE_BYTE_CONTROLSENSITIVITY    2250  // AAD
+#define EE_BYTE_LOWLEVELSENSITIVITY   2251  // AAD
 #define EE_BYTE_WAITONLYONSIGNAL      2253
 #define EE_UINT16_CALTOUCH1           2254
 #define EE_UINT16_CALTOUCH2           2258
