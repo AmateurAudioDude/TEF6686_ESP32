@@ -18,6 +18,8 @@
 #ifndef WiFiConnect_h
 #define WiFiConnect_h
 
+#include <FS.h>
+using FS = fs::FS;
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WebServer.h>
