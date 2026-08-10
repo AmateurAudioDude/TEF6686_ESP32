@@ -1,3 +1,15 @@
+# Changes
+
+* Stereo level range menu item
+* Auto BW sensitivity menu items
+* Squelch reversed
+
+### Ideal FM-DX Webserver settings (stereo noise reduction settings for TEF6686 only):
+
+<img width="586" height="458" alt="tef" src="https://github.com/user-attachments/assets/93d0a0e6-7054-4b12-a76f-58758108881a" />
+
+
+
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/PE5PVB/TEF6686_ESP32#contributing)
 [![License](https://img.shields.io/badge/license%20-%20GNU_GPLv3-GPLv3?color=blue)](https://github.com/PE5PVB/TEF6686_ESP32/blob/main/LICENSE)
 
