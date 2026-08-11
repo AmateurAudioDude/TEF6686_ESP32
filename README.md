@@ -4,6 +4,7 @@
 * Auto BW sensitivity menu items
 * IARU S-Meter menu item
 * Squelch reversed
+* RDS group-decode/PI-lock reverted to v2.20.8 (PS decode unchanged)
 
 ### Ideal FM-DX Webserver settings (stereo noise reduction settings for TEF6686 only):
 

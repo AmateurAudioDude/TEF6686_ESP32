@@ -742,7 +742,6 @@ class TEF6686 {
     String extractUTF8Substring(const String& utf8String, size_t start, size_t length, bool under);
     String ucs2ToUtf8(const char* ucs2Input);
     bool psUpdateChar(uint8_t position, uint8_t input, uint8_t error, bool commit);
-    void processRDSGroup(byte showrdserrors);
     String PSLongtext;
     char psChars[9];
     uint8_t psCharErrorLevel[8];

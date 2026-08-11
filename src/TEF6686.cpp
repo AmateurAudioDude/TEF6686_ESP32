@@ -396,18 +396,16 @@ bool TEF6686::getStatusAM(int16_t &level, uint16_t &noise, uint16_t &cochannel, 
 }
 
 void TEF6686::readRDS(byte showrdserrors) {
+  uint8_t offset;
   if (rds.filter && ps_process) {
-    devTEF_Radio_Get_RDS_Data(&rds.rdsStat, &rds.rdsA, &rds.rdsB, &rds.rdsC, &rds.rdsD, &rds.rdsErr);
+    devTEF_Radio_Get_RDS_Status(&rds.rdsStat, &rds.rdsA, &rds.rdsB, &rds.rdsC, &rds.rdsD, &rds.rdsErr);
   } else {
     if (millis() >= rdstimer + 87) {
       rdstimer += 87;
       devTEF_Radio_Get_RDS_Data(&rds.rdsStat, &rds.rdsA, &rds.rdsB, &rds.rdsC, &rds.rdsD, &rds.rdsErr);
 
       if ((rds.rdsStat & (1 << 14))) {
-        for (int i = 0; i < 22; i++) {
-          devTEF_Radio_Get_RDS_Data(&rds.rdsStat, &rds.rdsA, &rds.rdsB, &rds.rdsC, &rds.rdsD, &rds.rdsErr);
-          processRDSGroup(showrdserrors);                                                          // Decode every drained group, not just the last one
-        }
+        for (int i = 0; i < 22; i++) devTEF_Radio_Get_RDS_Data(&rds.rdsStat, &rds.rdsA, &rds.rdsB, &rds.rdsC, &rds.rdsD, &rds.rdsErr);
       }
     }
   }
@@ -423,12 +421,6 @@ void TEF6686::readRDS(byte showrdserrors) {
     }
   }
 
-  processRDSGroup(showrdserrors);                                                                  // Decode whatever the most recent fetch above left in rds.rdsA/B/C/D.
-}
-
-void TEF6686::processRDSGroup(byte showrdserrors) {
-  uint8_t offset;
-
   rdsAerrorThreshold = (((rds.rdsErr >> 14) & 0x03) > showrdserrors);
   rdsBerrorThreshold = (((rds.rdsErr >> 12) & 0x03) > showrdserrors);
   rdsCerrorThreshold = (((rds.rdsErr >> 10) & 0x03) > showrdserrors);
@@ -441,15 +433,9 @@ void TEF6686::processRDSGroup(byte showrdserrors) {
     rds.rdsDerror = (((rds.rdsErr >> 8) & 0x03) > 1);
 
     //PI decoder
-    if (afreset) {
-      uint8_t piErrorLevel = (rds.rdsErr >> 14) & 0x03;
-      if (piErrorLevel < 3) {
-        RdsPiBuffer::State piState = rds.piBuffer.add(rds.rdsA, piErrorLevel != 0);
-        if (piState == RdsPiBuffer::STATE_CORRECT || piState == RdsPiBuffer::STATE_VERY_LIKELY) {
-          rds.correctPI = rds.rdsA;
-          afreset = false;
-        }
-      }
+    if (!rdsAerrorThreshold && afreset) {
+      rds.correctPI = rds.rdsA;
+      afreset = false;
     }
 
     if (((!rdsAerrorThreshold && !rdsBerrorThreshold && !rdsCerrorThreshold && !rdsDerrorThreshold) || (rds.pierrors && !errorfreepi))) {
@@ -566,16 +552,13 @@ void TEF6686::processRDSGroup(byte showrdserrors) {
       }
     }
 
-    // Block B/C/D are only valid for ordinary group data (status bit 13 = 0); for a first-PI event
-    // (bit 13 = 1) the datasheet documents B/C/D as undefined, so skip the group-type decode below.
-    if (!bitRead(rds.rdsStat, 13)) {
-      if (!rds.rdsBerror || showrdserrors == 3) rdsblock = rds.rdsB >> 11; else return;
-      rds.blockcounter[rdsblock]++;
-      processed_rdsblocks++;
+    if (!rds.rdsBerror || showrdserrors == 3) rdsblock = rds.rdsB >> 11; else return;
+    rds.blockcounter[rdsblock]++;
+    processed_rdsblocks++;
 
-      switch (rdsblock) {
-        case RDS_GROUP_0A:
-        case RDS_GROUP_0B:
+    switch (rdsblock) {
+      case RDS_GROUP_0A:
+      case RDS_GROUP_0B:
         {
           //PS decoder
           if (showrdserrors == 3 || (!rdsBerrorThreshold && (!rdsDerrorThreshold))) {
@@ -1674,13 +1657,12 @@ void TEF6686::processRDSGroup(byte showrdserrors) {
           }
         }
         break;
-      }                                                                                              // closes switch(rdsblock)
-    }                                                                                                // closes if (!bitRead(rds.rdsStat, 13))
+    }
     previous_rdsA = rds.rdsA;
     previous_rdsB = rds.rdsB;
     previous_rdsC = rds.rdsC;
     previous_rdsD = rds.rdsD;
-  }                                                                                                  // closes if (bitRead(rds.rdsStat, 9) && new-block check)
+  }
 }
 
 void TEF6686::clearRDS (bool fullsearchrds) {
