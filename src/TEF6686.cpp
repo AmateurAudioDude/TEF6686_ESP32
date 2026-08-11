@@ -564,68 +564,55 @@ void TEF6686::readRDS(byte showrdserrors) {
           if (showrdserrors == 3 || (!rdsBerrorThreshold && (!rdsDerrorThreshold))) {
             offset = rds.rdsB & 0x03;                                                           // Let's get the character offset for PS
 
-            bool psCharErrorNow = ((rds.rdsErr >> 8) & 0x03) > 1;
-            rds.psCharError[(offset * 2) + 0] = psCharErrorNow;
-            rds.psCharError[(offset * 2) + 1] = psCharErrorNow;
-
-            uint8_t psInfoError = (rds.rdsErr >> 12) & 0x03;
-            uint8_t psDataError = (rds.rdsErr >> 8) & 0x03;
-            uint8_t psCurrError = 2 * psInfoError + 3 * psDataError;
-            if (psCurrError) psCurrError--;
-
-            psAdaptiveErrors = constrain(psAdaptiveErrors + (psCurrError == 0 ? -1 : 1), 0, 4);
-
-            uint8_t position = offset * 2;
-            uint8_t psPrevError = max(psCharErrorLevel[position], psCharErrorLevel[position + 1]);
-            uint8_t psInput[2] = { (uint8_t)(rds.rdsD >> 8), (uint8_t)(rds.rdsD & 0xFF) };
-            bool changed = false;
-            for (uint8_t i = 0; i < 2; i++) {
-              changed |= psUpdateChar(position + i, psInput[i], psCurrError, false);
+            switch (offset) {
+              case 0: if (((rds.rdsErr >> 8) & 0x03) > 1) rds.ps12error = true; else rds.ps12error = false; break;
+              case 1: if (((rds.rdsErr >> 8) & 0x03) > 1) rds.ps34error = true; else rds.ps34error = false; break;
+              case 2: if (((rds.rdsErr >> 8) & 0x03) > 1) rds.ps56error = true; else rds.ps56error = false; break;
+              case 3: if (((rds.rdsErr >> 8) & 0x03) > 1) rds.ps78error = true; else rds.ps78error = false; break;
             }
 
-            bool psProtect = (rds.fastps == 0) || (rds.fastps == 1 && psComplete);
-            bool psSuspicious = false;
-            if (psProtect && psCurrError == 0 && psPrevError == 0) {
-              if (changed) {
-                if (psProgressive && psAdaptiveCounter >= 20 && psAdaptiveErrors) {
-                  psAdaptiveCounter = 6;
-                  psSuspicious = true;
-                } else {
-                  psProgressive = false;
-                  psAdaptiveCounter = 0;
+            ps_buffer2[(offset * 2) + 0] = ps_buffer[(offset * 2) + 0];                         // Make a copy of the PS buffer
+            ps_buffer2[(offset * 2) + 1] = ps_buffer[(offset * 2) + 1];
+            ps_buffer2[8] = '\0';                                                               // Endmarker
+
+            ps_buffer[(offset * 2)  + 0] = rds.rdsD >> 8;                                       // First character of segment
+            ps_buffer[(offset * 2)  + 1] = rds.rdsD & 0xFF;                                     // Second character of segment
+            ps_buffer[8] = '\0';                                                                // Endmarker
+
+            if (ps_process || rds.fastps == 0) {
+              if (offset == 0) {
+                packet0 = true;
+                packet1 = false;
+                packet2 = false;
+                packet3 = false;
+              }
+              if (offset == 1) packet1 = true;
+              if (offset == 2) packet2 = true;
+              if (offset == 3) packet3 = true;
+            }
+
+            if (packet0 && packet1 && packet2 && packet3 && (ps_process || (rds.fastps == 0 && rds.fastps != 2))) { // Last chars are received
+              if (strcmp(ps_buffer, ps_buffer2) == 0) {                                                             // When no difference between current and buffer, let's go...
+                ps_process = true;
+                RDScharConverter(ps_buffer2, PStext, sizeof(PStext) / sizeof(wchar_t), (underscore > 0 ? true : false));                       // Convert 8 bit ASCII to 16 bit ASCII
+                String utf8String = convertToUTF8(PStext);                                                          // Convert RDS characterset to ASCII
+                rds.stationName = extractUTF8Substring(utf8String, 0, 8, (underscore > 0 ? true : false));                                     // Make sure PS does not exceed 8 characters
+                for (byte x = 0; x < 8; x++) {
+                  ps_buffer[x] = '\0';
+                  ps_buffer2[x] = '\0';
                 }
-              } else if (psAdaptiveCounter != 20) {
-                psAdaptiveCounter++;
-                if (!psProgressive && psAdaptiveCounter == 6) {
-                  psProgressive = true;
-                  changed = true;
-                }
               }
             }
 
-            if (!psSuspicious) {
-              for (uint8_t i = 0; i < 2; i++) {
-                psUpdateChar(position + i, psInput[i], psCurrError, true);
-              }
-            }
-
-            if (!psComplete) {
-              bool psAllSeen = true;
-              for (uint8_t i = 0; i < 8; i++) {
-                if (psCharErrorLevel[i] == 255) { psAllSeen = false; break; }
-              }
-              if (psAllSeen) {
-                psComplete = true;
-                changed = true;
-              }
-            }
-
-            if (changed && (rds.fastps != 0 || psComplete)) {
-              psChars[8] = '\0';
-              RDScharConverter(psChars, PStext, sizeof(PStext) / sizeof(wchar_t), (underscore > 0 ? true : false));
-              String utf8String = convertToUTF8(PStext);
+            if ((!ps_process && rds.fastps > 0 && rds.fastps != 2) || rds.fastps == 2) {                            // Let's get 2 runs of 8 PS characters fast and without refresh
+              if (offset == 0) packet0 = true;
+              if (offset == 1) packet1 = true;
+              if (offset == 2) packet2 = true;
+              if (offset == 3) packet3 = true;
+              RDScharConverter(ps_buffer, PStext, sizeof(PStext) / sizeof(wchar_t), (underscore > 0 ? true : false));                          // Convert 8 bit ASCII to 16 bit ASCII
+              String utf8String = convertToUTF8(PStext);                                                            // Convert RDS characterset to ASCII
               rds.stationName = extractUTF8Substring(utf8String, 0, 8, (underscore > 0 ? true : false));
-              ps_process = true;
+              if (packet0 && packet1 && packet2 && packet3) ps_process = true;                                      // OK, we had one runs, now let's go the idle PS writing
             }
 
             if (offset == 0) rds.hasDynamicPTY = bitRead(rds.rdsB, 2) & 0x1F;                   // Dynamic PTY flag
@@ -1684,14 +1671,12 @@ void TEF6686::clearRDS (bool fullsearchrds) {
 
   uint8_t i;
   for (i = 0; i < 8; i++) {
-    psChars[i] = 0x20;
-    psCharErrorLevel[i] = 255;
-    rds.psCharError[i] = true;
+    ps_buffer[i] = 0x20;
     PStext[i] = L'\0';
     ptyn_buffer[i] = 0x20;
     PTYNtext[i] = L'\0';
   }
-  psChars[8] = 0;
+  ps_buffer[8] = 0;
   ptyn_buffer[8] = 0;
   PStext[8] = L'\0';
   PTYNtext[8] = L'\0';
@@ -1802,10 +1787,6 @@ void TEF6686::clearRDS (bool fullsearchrds) {
   rds.hasEnhancedRT = false;
   rt_process = false;
   ps_process = false;
-  psProgressive = false;
-  psAdaptiveCounter = 0;
-  psAdaptiveErrors = 0;
-  psComplete = false;
   pslong_process = false;
   rds.rdsreset = true;
   rds.hasArtificialhead = false;
@@ -1828,6 +1809,10 @@ void TEF6686::clearRDS (bool fullsearchrds) {
   afinit = false;
   errorfreepi = false;
   afmethodB = false;
+  packet0 = false;
+  packet1 = false;
+  packet2 = false;
+  packet3 = false;
   packet0long = false;
   packet1long = false;
   packet2long = false;
@@ -1838,18 +1823,10 @@ void TEF6686::clearRDS (bool fullsearchrds) {
   correctPIold = 0;
   af_number = 0;
   _hasEnhancedRT = false;
-}
-
-bool TEF6686::psUpdateChar(uint8_t position, uint8_t input, uint8_t error, bool commit) {
-  bool neverConfirmed = (psCharErrorLevel[position] == 255);
-  if (!neverConfirmed && psProgressive && psCharErrorLevel[position] < error) return false;
-  if (input < 0x20 && input != 0x0A) return false;
-  if (!neverConfirmed && (uint8_t)psChars[position] == input && psCharErrorLevel[position] <= error) return false;
-  if (commit) {
-    psChars[position] = (char)input;
-    psCharErrorLevel[position] = error;
-  }
-  return true;
+  rds.ps12error = true;
+  rds.ps34error = true;
+  rds.ps56error = true;
+  rds.ps78error = true;
 }
 
 void TEF6686::tone(uint16_t time, int16_t amplitude, uint16_t frequency) {
