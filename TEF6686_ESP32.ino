@@ -198,7 +198,7 @@ byte amgain;
 byte freqoldcount;
 byte HighCutLevel;
 byte HighCutOffset;
-byte items[10] = {10, static_cast<byte>(dynamicspi ? 10 : 9), 10, 10, 10, 10, 9, 10, 10, 9}; // AAD
+byte items[10] = {10, static_cast<byte>(dynamicspi ? 10 : 9), 10, 10, 10, 10, 9, 10, 10, 10}; // AAD // aad meter
 byte iMSEQ;
 byte iMSset;
 byte language;
@@ -211,6 +211,7 @@ byte memoryposold;
 byte memoryposstatus;
 byte mempionly;
 byte memstartpos;
+byte MeterMode; // aad meter
 byte memstoppos;
 byte menuitem;
 byte menupage;
@@ -514,6 +515,7 @@ void setup() {
   LowLevelSensitivity = EEPROM.readByte(EE_BYTE_LOWLEVELSENSITIVITY); // AAD
   StereoLevel = EEPROM.readByte(EE_BYTE_STEREOLEVEL);
   StereoRange = EEPROM.readByte(EE_BYTE_STEREORANGE); // AAD
+  MeterMode = EEPROM.readByte(EE_BYTE_METERMODE); // aad meter
   bandFM = EEPROM.readByte(EE_BYTE_BANDFM);
   bandAM = EEPROM.readByte(EE_BYTE_BANDAM);
   HighCutLevel = EEPROM.readByte(EE_BYTE_HIGHCUTLEVEL);
@@ -1256,11 +1258,18 @@ void loop() {
         tftPrint(ALEFT, "70", 114, 144, ActiveColor, ActiveColorSmooth, 16);
         tftPrint(ALEFT, "100", 160, 144, ActiveColor, ActiveColorSmooth, 16);
         tftPrint(ACENTER, "A", 7, 128, ActiveColor, ActiveColorSmooth, 16);
-        for (byte segments = 0; segments < 87; segments++) {
-          if (segments > 54) {
+        for (byte segments = 0; segments < 55; segments++) {
+          if (((segments + 1) % 6) == 0) tft.fillRect(16 + (2 * segments), 141, 2, 2, ModBarInsignificantColor);
+        }
+        if (MeterMode) {
+          // aad meter
+          const byte aboveS9Ticks[6] = {136, 147, 158, 168, 178, 188}; // aad meter
+          for (byte i = 0; i < 6; i++) {
+            tft.fillRect(aboveS9Ticks[i], 141, 2, 2, BarSignificantColor);
+          }
+        } else {
+          for (byte segments = 55; segments < 87; segments++) {
             if (((segments - 53) % 10) == 0) tft.fillRect(16 + (2 * segments), 141, 2, 2, BarSignificantColor);
-          } else {
-            if (((segments + 1) % 6) == 0) tft.fillRect(16 + (2 * segments), 141, 2, 2, ModBarInsignificantColor);
           }
         }
       }
@@ -3275,6 +3284,20 @@ void ShowFreq(int mode) {
   }
 }
 
+// aad meter
+int16_t IARUSegments(float dBuV, float dBuVAtS9) {
+  const float S9_SEGMENT = 53.0;
+  const float ABOVE_S9_SEGMENTS = 34.0;
+  const float ABOVE_S9_RANGE_DB = 60.0;
+  float segment;
+  if (dBuV <= dBuVAtS9) {
+    segment = dBuV - dBuVAtS9 + S9_SEGMENT;
+  } else {
+    segment = S9_SEGMENT + (dBuV - dBuVAtS9) * (ABOVE_S9_SEGMENTS / ABOVE_S9_RANGE_DB);
+  }
+  return (int16_t)constrain(segment, 0, 87);
+}
+
 void ShowSignalLevel() {
   SAvg = (((SAvg * 9) + 5) / 10) + SStatus;
   SAvg2 = (((SAvg2 * 9) + 5) / 10) + CN;
@@ -3355,9 +3378,17 @@ void ShowSignalLevel() {
 
         // Calculate segments for signal meter
         if (band < BAND_GAP) {
-          DisplayedSignalSegments = constrain(map(SStatus / 10, 0, 70, 0, 100), 0, 87);
+          if (MeterMode) {
+            DisplayedSignalSegments = IARUSegments(SStatus / 10.0, 22.75); // aad meter
+          } else {
+            DisplayedSignalSegments = constrain(map(SStatus / 10, 0, 70, 0, 100), 0, 87);
+          }
         } else {
-          DisplayedSignalSegments = constrain((SStatus + 200) / 10, 0, 87);
+          if (MeterMode) {
+            DisplayedSignalSegments = IARUSegments(SStatus / 10.0, 42.75); // aad meter
+          } else {
+            DisplayedSignalSegments = constrain((SStatus + 200) / 10, 0, 87);
+          }
         }
 
         // Convert colors from RGB565 to HSV
@@ -4574,6 +4605,7 @@ void DefaultSettings() {
   EEPROM.writeByte(EE_BYTE_LOWLEVELSENSITIVITY, 8); // AAD
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, 0);
   EEPROM.writeByte(EE_BYTE_STEREORANGE, 24); // AAD
+  EEPROM.writeByte(EE_BYTE_METERMODE, 0); // aad meter
   EEPROM.writeByte(EE_BYTE_BANDFM, FM_BAND_ALL);
   EEPROM.writeByte(EE_BYTE_BANDAM, AM_BAND_ALL);
   EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, 50); // AAD Default
@@ -4863,6 +4895,7 @@ void endMenu() {
   EEPROM.writeByte(EE_BYTE_CONTROLSENSITIVITY, ControlSensitivity); // AAD
   EEPROM.writeByte(EE_BYTE_LOWLEVELSENSITIVITY, LowLevelSensitivity); // AAD
   EEPROM.writeByte(EE_BYTE_STEREORANGE, StereoRange); // AAD
+  EEPROM.writeByte(EE_BYTE_METERMODE, MeterMode); // aad meter
   EEPROM.writeByte(EE_BYTE_BANDFM, bandFM);
   EEPROM.writeByte(EE_BYTE_BANDAM, bandAM);
   EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, HighCutLevel);

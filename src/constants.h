@@ -347,6 +347,7 @@
 #define EE_BYTE_STEREORANGE           2248  // AAD
 #define EE_BYTE_CONTROLSENSITIVITY    2250  // AAD
 #define EE_BYTE_LOWLEVELSENSITIVITY   2251  // AAD
+#define EE_BYTE_METERMODE             2252  // aad meter
 #define EE_BYTE_WAITONLYONSIGNAL      2253
 #define EE_UINT16_CALTOUCH1           2254
 #define EE_UINT16_CALTOUCH2           2258

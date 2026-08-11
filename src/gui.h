@@ -102,6 +102,7 @@ extern byte memorypos;
 extern byte memdoublepi;
 extern byte mempionly;
 extern byte memstartpos;
+extern byte MeterMode; // aad meter
 extern byte memstoppos;
 extern byte menuitem;
 extern byte menupage;

@@ -2,6 +2,7 @@
 
 * Stereo level range menu item
 * Auto BW sensitivity menu items
+* IARU S-Meter menu item
 * Squelch reversed
 
 ### Ideal FM-DX Webserver settings (stereo noise reduction settings for TEF6686 only):
