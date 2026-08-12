@@ -183,6 +183,7 @@ byte charwidth = 8;
 byte chipmodel;
 byte hardwaremodel;
 byte ContrastSet;
+byte ControlSensitivity; // AAD
 byte CurrentSkin;
 byte CurrentTheme;
 byte displayflip;
@@ -201,12 +202,13 @@ byte amgain;
 byte freqoldcount;
 byte HighCutLevel;
 byte HighCutOffset;
-byte items[10] = {10, static_cast<byte>(dynamicspi ? 10 : 9), 7, 10, 10, 10, 9, 10, 10, 9};
+byte items[10] = {10, static_cast<byte>(dynamicspi ? 10 : 9), 10, 10, 10, 10, 9, 10, 10, 10}; // AAD // aad meter
 byte iMSEQ;
 byte iMSset;
 byte language;
 byte licold;
 byte longbandpress;
+byte LowLevelSensitivity; // AAD
 byte memdoublepi;
 byte memorypos;
 byte memoryposold;
@@ -214,6 +216,7 @@ byte memoryposprevious;
 byte memoryposstatus;
 byte mempionly;
 byte memstartpos;
+byte MeterMode; // aad meter
 byte memstoppos;
 byte menuitem;
 byte menupage;
@@ -238,6 +241,7 @@ byte stationlistid;
 byte nowToggleSWMIBand = 1;
 byte stepsize;
 byte StereoLevel;
+byte StereoRange; // AAD
 byte subnetclient;
 byte TEF;
 byte tot;
@@ -512,7 +516,11 @@ void setup() {
   LowEdgeSet = EEPROM.readUInt(EE_UINT16_FMLOWEDGESET);
   HighEdgeSet = EEPROM.readUInt(EE_UINT16_FMHIGHEDGESET);
   ContrastSet = EEPROM.readByte(EE_BYTE_CONTRASTSET);
+  ControlSensitivity = EEPROM.readByte(EE_BYTE_CONTROLSENSITIVITY); // AAD
+  LowLevelSensitivity = EEPROM.readByte(EE_BYTE_LOWLEVELSENSITIVITY); // AAD
   StereoLevel = EEPROM.readByte(EE_BYTE_STEREOLEVEL);
+  StereoRange = EEPROM.readByte(EE_BYTE_STEREORANGE); // AAD
+  MeterMode = EEPROM.readByte(EE_BYTE_METERMODE); // aad meter
   bandFM = EEPROM.readByte(EE_BYTE_BANDFM);
   bandAM = EEPROM.readByte(EE_BYTE_BANDAM);
   HighCutLevel = EEPROM.readByte(EE_BYTE_HIGHCUTLEVEL);
@@ -936,7 +944,7 @@ void setup() {
   if (!SPIFFS.exists("/logbook.csv")) handleCreateNewLogbook();
 
   tryWiFi();
-  delay(1500);
+  delay(250); // AAD
 
   radio.setVolume(VolSet);
   radio.setOffset(LevelOffset);
@@ -945,7 +953,10 @@ void setup() {
     radio.setAMCoChannel(amcodect, amcodectcount);
     radio.setAMAttenuation(amgain);
   }
+  radio.setControlSensitivity(ControlSensitivity); // AAD
+  radio.setLowLevelSensitivity(LowLevelSensitivity); // AAD
   radio.setStereoLevel(StereoLevel);
+  radio.setStereoRange(StereoRange); // AAD
   radio.setHighCutLevel(HighCutLevel);
   radio.setHighCutOffset(HighCutOffset);
   radio.clearRDS(fullsearchrds);
@@ -1256,11 +1267,18 @@ void loop() {
         tftPrint(ALEFT, "70", 114, 144, ActiveColor, ActiveColorSmooth, 16);
         tftPrint(ALEFT, "100", 160, 144, ActiveColor, ActiveColorSmooth, 16);
         tftPrint(ACENTER, "A", 7, 128, ActiveColor, ActiveColorSmooth, 16);
-        for (byte segments = 0; segments < 87; segments++) {
-          if (segments > 54) {
+        for (byte segments = 0; segments < 55; segments++) {
+          if (((segments + 1) % 6) == 0) tft.fillRect(16 + (2 * segments), 141, 2, 2, ModBarInsignificantColor);
+        }
+        if (MeterMode) {
+          // aad meter
+          const byte aboveS9Ticks[6] = {136, 147, 158, 168, 178, 188}; // aad meter
+          for (byte i = 0; i < 6; i++) {
+            tft.fillRect(aboveS9Ticks[i], 141, 2, 2, BarSignificantColor);
+          }
+        } else {
+          for (byte segments = 55; segments < 87; segments++) {
             if (((segments - 53) % 10) == 0) tft.fillRect(16 + (2 * segments), 141, 2, 2, BarSignificantColor);
-          } else {
-            if (((segments + 1) % 6) == 0) tft.fillRect(16 + (2 * segments), 141, 2, 2, ModBarInsignificantColor);
           }
         }
       }
@@ -3275,6 +3293,20 @@ void ShowFreq(int mode) {
   }
 }
 
+// aad meter
+int16_t IARUSegments(float dBuV, float dBuVAtS9) {
+  const float S9_SEGMENT = 53.0;
+  const float ABOVE_S9_SEGMENTS = 34.0;
+  const float ABOVE_S9_RANGE_DB = 60.0;
+  float segment;
+  if (dBuV <= dBuVAtS9) {
+    segment = dBuV - dBuVAtS9 + S9_SEGMENT;
+  } else {
+    segment = S9_SEGMENT + (dBuV - dBuVAtS9) * (ABOVE_S9_SEGMENTS / ABOVE_S9_RANGE_DB);
+  }
+  return (int16_t)constrain(segment, 0, 87);
+}
+
 void ShowSignalLevel() {
   SAvg = (((SAvg * 9) + 5) / 10) + SStatus;
   SAvg2 = (((SAvg2 * 9) + 5) / 10) + CN;
@@ -3355,9 +3387,17 @@ void ShowSignalLevel() {
 
         // Calculate segments for signal meter
         if (band < BAND_GAP) {
-          DisplayedSignalSegments = constrain(map(SStatus / 10, 0, 70, 0, 100), 0, 87);
+          if (MeterMode) {
+            DisplayedSignalSegments = IARUSegments(SStatus / 10.0, 22.75); // aad meter
+          } else {
+            DisplayedSignalSegments = constrain(map(SStatus / 10, 0, 70, 0, 100), 0, 87);
+          }
         } else {
-          DisplayedSignalSegments = constrain((SStatus + 200) / 10, 0, 87);
+          if (MeterMode) {
+            DisplayedSignalSegments = IARUSegments(SStatus / 10.0, 42.75); // aad meter
+          } else {
+            DisplayedSignalSegments = constrain((SStatus + 200) / 10, 0, 87);
+          }
         }
 
         // Convert colors from RGB565 to HSV
@@ -3666,7 +3706,8 @@ void showAutoSquelch(bool mode) {
 }
 
 void doSquelch() {
-  if (!XDRGTKUSB && !XDRGTKTCP && usesquelch && !autosquelch) Squelch = map(analogRead(PIN_POT), 0, 4095, -100, 920);
+  if (!XDRGTKUSB && !XDRGTKTCP && usesquelch && !autosquelch) Squelch = map(analogRead(PIN_POT), 0, 3584, 920, -100); // AAD
+  if (Squelch < -95) Squelch = -100; // AAD
   if (Squelch < - 800) Squelch = -100;
   if (Squelch > 900) Squelch = 920;
 
@@ -3697,7 +3738,7 @@ void doSquelch() {
         }
       }
     } else {
-      if ((USN < amscansens * 30) && (OStatus < 20 && OStatus > -20) && (!scandxmode || (scandxmode && !scanmute))) {
+      if ((USN < amscansens * 30) && (OStatus < 2 && OStatus > -2) && (!scandxmode || (scandxmode && !scanmute))) {
         if (!seek) radio.setUnMute();
         if (!screenmute && !seek) {
           tft.drawBitmap(249, 4, Speaker, 28, 24, GreyoutColor);
@@ -4477,16 +4518,15 @@ void SetTunerPatch() {
 
 void read_encoder() {
   if (!digitalRead(ROTARY_PIN_A) || !digitalRead(ROTARY_PIN_B)) {
-    if (millis() - rotarytimer >= 15) {
-      rotarycounteraccelerator = 2;  // Steady fast
+    unsigned long rotaryElapsed = millis() - rotarytimer;
+    if (rotaryElapsed >= 45) {
+      rotarycounteraccelerator = 6;  // Quick flicks
       rotarycounter = 0;
-    }
-    if (millis() - rotarytimer >= 30) {
+    } else if (rotaryElapsed >= 30) {
       rotarycounteraccelerator = 4;
       rotarycounter = 0;
-    }
-    if (millis() - rotarytimer >= 45) {
-      rotarycounteraccelerator = 6;  // Quick flicks
+    } else if (rotaryElapsed >= 15) {
+      rotarycounteraccelerator = 2;  // Steady fast
       rotarycounter = 0;
     }
   }
@@ -4523,6 +4563,8 @@ void read_encoder() {
       encval = 0;
     }
   }
+
+  if ((old_AB & 0x03) == 0x03) encval = 0; // Discard stale partial count at rest
 }
 
 void MuteScreen(bool setting) {
@@ -4566,18 +4608,22 @@ void DefaultSettings() {
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_OIRT, FREQ_FM_OIRT_START);
   EEPROM.writeByte(EE_BYTE_VOLSET, 0);
   EEPROM.writeUInt(EE_UINT16_CONVERTERSET, 0);
-  EEPROM.writeUInt(EE_UINT16_FMLOWEDGESET, 875);
+  EEPROM.writeUInt(EE_UINT16_FMLOWEDGESET, 870); // AAD Default
   EEPROM.writeUInt(EE_UINT16_FMHIGHEDGESET, 1080);
   EEPROM.writeByte(EE_BYTE_CONTRASTSET, 50);
+  EEPROM.writeByte(EE_BYTE_CONTROLSENSITIVITY, 7); // AAD
+  EEPROM.writeByte(EE_BYTE_LOWLEVELSENSITIVITY, 8); // AAD
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, 0);
+  EEPROM.writeByte(EE_BYTE_STEREORANGE, 24); // AAD
+  EEPROM.writeByte(EE_BYTE_METERMODE, 1); // aad meter
   EEPROM.writeByte(EE_BYTE_BANDFM, FM_BAND_ALL);
   EEPROM.writeByte(EE_BYTE_BANDAM, AM_BAND_ALL);
-  EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, 70);
-  EEPROM.writeByte(EE_BYTE_HIGHCUTOFFSET, 0);
+  EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, 50); // AAD Default
+  EEPROM.writeByte(EE_BYTE_HIGHCUTOFFSET, 30); // AAD Default
   EEPROM.writeByte(EE_BYTE_LEVELOFFSET, 0);
   EEPROM.writeByte(EE_BYTE_RTBUFFER, 1);
   EEPROM.writeByte(EE_BYTE_EDGEBEEP, 0);
-  EEPROM.writeByte(EE_BYTE_SOFTMUTEAM, 1);
+  EEPROM.writeByte(EE_BYTE_SOFTMUTEAM, 0); // AAD Default
   EEPROM.writeByte(EE_BYTE_SOFTMUTEFM, 0);
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_AM, 828);
   EEPROM.writeByte(EE_BYTE_LANGUAGE, 0);
@@ -4602,7 +4648,7 @@ void DefaultSettings() {
   EEPROM.writeUInt(EE_UINT16_WIFI_SUBNET, 0);
   EEPROM.writeByte(EE_BYTE_SHOWSWMIBAND, 1);
   EEPROM.writeByte(EE_BYTE_RDS_FILTER, 1);
-  EEPROM.writeByte(EE_BYTE_RDS_PIERRORS, 0);
+  EEPROM.writeByte(EE_BYTE_RDS_PIERRORS, 1); // AAD
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_LW, 180);
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_MW, 540);
   EEPROM.writeUInt(EE_UINT16_FREQUENCY_SW, 1800);
@@ -4618,11 +4664,11 @@ void DefaultSettings() {
   EEPROM.writeUInt(EE_UINT16_LOWEDGEOIRTSET, 0);
   EEPROM.writeUInt(EE_UINT16_HIGHEDGEOIRTSET, 0);
   EEPROM.writeByte(EE_BYTE_POWEROPTIONS, 1);
-  EEPROM.writeByte(EE_BYTE_CURRENTTHEME, 0);
+  EEPROM.writeByte(EE_BYTE_CURRENTTHEME, 5);  // AAD
   EEPROM.writeByte(EE_BYTE_FMDEFAULTSTEPSIZE, 1);
   EEPROM.writeByte(EE_BYTE_SCREENSAVERSET, 0);
   EEPROM.writeInt(EE_INT16_AMLEVELOFFSET, 0);
-  EEPROM.writeByte(EE_BYTE_UNIT, 0);
+  EEPROM.writeByte(EE_BYTE_UNIT, 2); // AAD
   EEPROM.writeByte(EE_BYTE_AF, 0);
   EEPROM.writeByte(EE_BYTE_STEREO, 1);
   EEPROM.writeByte(EE_BYTE_BATTERY_OPTIONS, BATTERY_VALUE);
@@ -4860,6 +4906,10 @@ void endMenu() {
   EEPROM.writeUInt(EE_UINT16_FMHIGHEDGESET, HighEdgeSet);
   EEPROM.writeByte(EE_BYTE_CONTRASTSET, ContrastSet);
   EEPROM.writeByte(EE_BYTE_STEREOLEVEL, StereoLevel);
+  EEPROM.writeByte(EE_BYTE_CONTROLSENSITIVITY, ControlSensitivity); // AAD
+  EEPROM.writeByte(EE_BYTE_LOWLEVELSENSITIVITY, LowLevelSensitivity); // AAD
+  EEPROM.writeByte(EE_BYTE_STEREORANGE, StereoRange); // AAD
+  EEPROM.writeByte(EE_BYTE_METERMODE, MeterMode); // aad meter
   EEPROM.writeByte(EE_BYTE_BANDFM, bandFM);
   EEPROM.writeByte(EE_BYTE_BANDAM, bandAM);
   EEPROM.writeByte(EE_BYTE_HIGHCUTLEVEL, HighCutLevel);
