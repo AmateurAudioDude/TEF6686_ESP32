@@ -31,6 +31,7 @@ extern bool softmutefm;
 extern bool SQ;
 extern bool StereoToggle;
 extern bool store;
+extern bool Tuner_DelayBuffer; // AAD
 extern bool usesquelch;
 extern bool wifi;
 extern bool wificonnected;
