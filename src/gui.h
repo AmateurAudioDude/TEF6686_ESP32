@@ -88,6 +88,7 @@ extern byte BWset;
 extern byte BWsettemp;
 extern byte BWsetOpen;
 extern byte ContrastSet;
+extern byte ControlSensitivity; // AAD
 extern byte CurrentSkin;
 extern byte CurrentTheme;
 extern byte ECCold;
@@ -109,10 +110,12 @@ extern byte items[];
 extern byte language;
 extern byte licold;
 extern byte longbandpress;
+extern byte LowLevelSensitivity; // AAD
 extern byte memorypos;
 extern byte memdoublepi;
 extern byte mempionly;
 extern byte memstartpos;
+extern byte MeterMode; // aad meter
 extern byte memstoppos;
 extern byte menuitem;
 extern byte menupage;
@@ -133,6 +136,7 @@ extern byte showrdserrors;
 extern byte stationlistid;
 extern int8_t CNold;
 extern byte StereoLevel;
+extern byte StereoRange; // AAD
 extern byte submenu;
 extern byte subnetclient;
 extern byte TEF;
